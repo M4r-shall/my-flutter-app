@@ -61,7 +61,7 @@ class NewsFeedCard extends StatelessWidget {
               children: [
                 const CircleAvatar(
                   radius: 20,
-                  backgroundImage: AssetImage('assets/images/pau.jpg'),
+                  backgroundImage: AssetImage('assets/images/marius.jpg'),
                 ),
                 SizedBox(
                   width: ScreenUtil().setWidth(10),
