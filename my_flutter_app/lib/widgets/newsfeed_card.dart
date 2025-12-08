@@ -50,6 +50,7 @@ class NewsFeedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: fbLightPrimary,
       margin: EdgeInsets.all(ScreenUtil().setSp(10)),
       child: Padding(
         padding: EdgeInsets.all(ScreenUtil().setSp(10)),
@@ -72,7 +73,7 @@ class NewsFeedCard extends StatelessWidget {
                     CustomFont(
                       text: userName,
                       fontSize: ScreenUtil().setSp(15),
-                      color: Colors.black,
+                      color: fbTextColorWhite,
                       fontWeight: FontWeight.bold,
                     ),
                     Row(
@@ -82,14 +83,14 @@ class NewsFeedCard extends StatelessWidget {
                         CustomFont(
                           text: date,
                           fontSize: ScreenUtil().setSp(12),
-                          color: Colors.grey,
+                          color: fbTextColorWhite.withOpacity(0.7),
                         ),
                         SizedBox(
                           width: ScreenUtil().setWidth(3),
                         ),
                         Icon(
                           Icons.public,
-                          color: Colors.grey,
+                          color: fbTextColorWhite.withOpacity(0.7),
                           size: ScreenUtil().setSp(15),
                         ),
                       ],
@@ -97,7 +98,7 @@ class NewsFeedCard extends StatelessWidget {
                   ],
                 ),
                 Spacer(),
-                Icon(Icons.more_horiz),
+                Icon(Icons.more_horiz, color: fbTextColorWhite.withOpacity(0.7)),
               ],
             ),
 
@@ -106,7 +107,7 @@ class NewsFeedCard extends StatelessWidget {
             CustomFont(
               text: postContent,
               fontSize: ScreenUtil().setSp(12),
-              color: Colors.black,
+              color: fbTextColorWhite,
             ),
             SizedBox(height: ScreenUtil().setHeight(5)),
             hasImage == true
@@ -123,19 +124,19 @@ class NewsFeedCard extends StatelessWidget {
                 ActionButton(
                   icon: Icons.thumb_up,
                   label: '$numOfLikes', 
-                  color: fbDarkPrimary,
+                  color: fbPrimary,
                   onPressed: () => developer.log('Liked'),
                 ),
                 ActionButton(
                   icon: Icons.comment,
                   label: 'Comment',
-                  color: fbDarkPrimary,
+                  color: fbPrimary,
                   onPressed: () {},
                 ),
                 ActionButton(
                   icon: Icons.redo,
                   label: 'Share',
-                  color: fbDarkPrimary,
+                  color: fbPrimary,
                   onPressed: () {},
                 ),
               ],
@@ -155,14 +156,14 @@ class NewsFeedCard extends StatelessWidget {
                   height: ScreenUtil().setHeight(25),
                   width: ScreenUtil().setWidth(330),
                   decoration: BoxDecoration(
-                    color: Colors.grey[200],
+                    color: fbDarkPrimary.withOpacity(0.5),
                     borderRadius: BorderRadius.all(
                       Radius.circular(ScreenUtil().setSp(10))),
                     ),
                   child: CustomFont(
                   text: 'Write a comment...',
                   fontSize: ScreenUtil().setSp(11),
-                  color: Colors.grey
+                  color: fbTextColorWhite.withOpacity(0.6),
                   ),  
                 ),
               ],
@@ -174,7 +175,7 @@ class NewsFeedCard extends StatelessWidget {
               text: 'View comments',
               fontSize: ScreenUtil().setSp(12),
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: fbTextColorWhite,
             ),
           ],
         ),

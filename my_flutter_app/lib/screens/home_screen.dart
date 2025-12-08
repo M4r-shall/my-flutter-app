@@ -23,6 +23,12 @@ class _HomeScreenState extends State<HomeScreen> {
     ProfileScreen(),       
   ];
 
+  final List<String> _titles = const [
+    'TFTalks',
+    'Notifications',
+    'Profile',
+  ];
+
   @override
   void dispose() {
     _pageController.dispose();
@@ -37,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         shadowColor: fbTextColorWhite,
         elevation: 2,
         title: CustomFont(
-          text: 'facebook',
+          text: _titles[_selectedIndex],
           fontSize: ScreenUtil().setSp(25),
           color: fbSecondary,
           fontFamily: 'Klavika',
