@@ -20,7 +20,7 @@ class MainApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Marius Facebook',
+          title: 'TFTalks',
           initialRoute: '/home',
           routes: {
             '/newsfeed': (context) => const NewsfeedScreen(),

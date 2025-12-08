@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = const [
     NewsfeedScreen(),
     NotificationScreen(), 
-    ProfileScreen(),      
+    ProfileScreen(),       
   ];
 
   @override
@@ -33,12 +33,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: fbDarkPrimary,
         shadowColor: fbTextColorWhite,
         elevation: 2,
         title: CustomFont(
           text: 'facebook',
           fontSize: ScreenUtil().setSp(25),
-          color: fbPrimary,
+          color: fbSecondary,
           fontFamily: 'Klavika',
         ),
       ),
@@ -52,6 +53,8 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: fbLightPrimary, 
+        type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         onTap: _onTappedBar,
@@ -68,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         selectedItemColor: fbPrimary,
+        unselectedItemColor: fbTextColorWhite,
         currentIndex: _selectedIndex,
       ),
     );
