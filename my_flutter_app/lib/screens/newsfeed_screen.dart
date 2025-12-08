@@ -7,33 +7,48 @@ class NewsfeedScreen extends StatelessWidget {
 
   final List<Map<String, dynamic>> dummyPosts = const [
     {
-      'userName': 'Marius Panahon',
+      'userName': 'Marius Clarence Panahon',
       'postContent': 'New semester, new challenges. Let\'s get this TFTalks to a high grade!',
       'numOfLikes': 100,
       'date': 'September 15',
       'hasImage': false,
     },
     {
-      'userName': 'Pau Pau',
+      'userName': 'Pau',
       'postContent': 'World traveling is amazing. What places should I visit next?',
       'numOfLikes': 210,
       'date': 'October 28',
       'hasImage': true,
     },
     {
-      'userName': 'Cyrus Robles',
+      'userName': 'Shem',
       'postContent': 'Just finished a marathon coding session. Need coffee!',
       'numOfLikes': 45,
       'date': 'November 30',
       'hasImage': false,
     },
     {
-      'userName': 'Roben Juanatas',
+      'userName': 'Mac',
       'postContent': 'Excited about the upcoming project deadline. Ready to shine!',
       'numOfLikes': 312,
       'date': 'December 5',
       'hasImage': true,
     },
+    {
+      'userName': 'Vergie',
+      'postContent': 'Excited about the upcoming project deadline. Ready to shine!',
+      'numOfLikes': 312,
+      'date': 'December 5',
+      'hasImage': true,
+    },
+    {
+      'userName': 'JB',
+      'postContent': 'Excited about the upcoming project deadline. Ready to shine!',
+      'numOfLikes': 312,
+      'date': 'December 5',
+      'hasImage': true,
+    },
+    
   ];
 
   @override

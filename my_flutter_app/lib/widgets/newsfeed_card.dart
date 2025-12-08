@@ -124,19 +124,19 @@ class NewsFeedCard extends StatelessWidget {
                 ActionButton(
                   icon: Icons.thumb_up,
                   label: '$numOfLikes', 
-                  color: fbPrimary,
+                  color: fbTextColorWhite,
                   onPressed: () => developer.log('Liked'),
                 ),
                 ActionButton(
                   icon: Icons.comment,
                   label: 'Comment',
-                  color: fbPrimary,
+                  color: fbTextColorWhite,
                   onPressed: () {},
                 ),
                 ActionButton(
                   icon: Icons.redo,
                   label: 'Share',
-                  color: fbPrimary,
+                  color: fbTextColorWhite,
                   onPressed: () {},
                 ),
               ],

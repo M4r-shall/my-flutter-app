@@ -13,54 +13,54 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   final List<Map<String, String>> dummyNotifications = const [
     {
-      'name': 'Prof. T.F. Talk',
+      'name': 'Cyrus Robles',
       'post': 'Your latest submission.',
       'description': 'Graded your mobile programming assignment.',
     },
     {
-      'name': 'Academia Club',
+      'name': 'Wizards Circle',
       'post': 'Event announcement.',
-      'description': 'Invites you to the annual reading marathon.',
+      'description': 'Invites you to the annual movie marathon.',
     },
     {
-      'name': 'Marius Panahon',
+      'name': 'Marius Clarence Panahon',
       'post': 'Status update.',
       'description': 'Reacted to your post.',
     },
     {
-      'name': 'Pau Pau',
+      'name': 'Paula',
       'post': 'Shared content.',
       'description': 'Shared your photo.',
     },
     {
-      'name': 'Roben Juanatas',
+      'name': 'Adrian',
       'post': 'Comment.',
       'description': 'Wrote a comment on your newsfeed card.',
     },
     {
-      'name': 'Cyrus Robles',
+      'name': 'Shem',
       'post': 'Friend Request.',
-      'description': 'Cyrus Robles sent you a friend request.',
+      'description': 'Shem sent you a friend request.',
     },
     {
-      'name': 'The University',
+      'name': 'National University',
       'post': 'School Advisory.',
       'description': 'Classes are suspended tomorrow due to heavy rain.',
     },
     {
-      'name': 'Jane Doe',
+      'name': 'JB',
       'post': 'Birthday.',
-      'description': 'It\'s Jane Doe\'s birthday today!',
+      'description': 'It\'s JB\'s birthday today!',
     },
     {
-      'name': 'Project Group 3',
+      'name': 'Vergie',
       'post': 'Meeting reminder.',
       'description': 'Group meeting at 4 PM in the library.',
     },
     {
-      'name': 'Global Events',
+      'name': 'Task Force 141',
       'post': 'News.',
-      'description': 'A new discovery was made in astrophysics.',
+      'description': 'A new discovery was made in Yemen.',
     },
   ];
 
