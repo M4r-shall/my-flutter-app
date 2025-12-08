@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:developer' as developer;
+import 'package:intl/intl.dart';
 import '../constants.dart';
 import 'custom_font.dart';
 
@@ -35,9 +36,11 @@ class ActionButton extends StatelessWidget {
 class NewsFeedCard extends StatelessWidget {
   final String userName;
   final String postContent;
-  final String date;
+  final DateTime date;
   final int numOfLikes;
   final bool hasImage;
+  final String profileImagePath;
+
   const NewsFeedCard({
     super.key,
     required this.userName,
@@ -45,6 +48,7 @@ class NewsFeedCard extends StatelessWidget {
     this.numOfLikes = 0,
     this.hasImage = false,
     required this.date,
+    required this.profileImagePath,
   });
 
   @override
@@ -60,9 +64,9 @@ class NewsFeedCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const CircleAvatar(
+                CircleAvatar(
                   radius: 20,
-                  backgroundImage: AssetImage('assets/images/marius.jpg'),
+                  backgroundImage: AssetImage(profileImagePath),
                 ),
                 SizedBox(
                   width: ScreenUtil().setWidth(10),
@@ -81,7 +85,7 @@ class NewsFeedCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         CustomFont(
-                          text: date,
+                          text: DateFormat.yMMMMd().format(date),
                           fontSize: ScreenUtil().setSp(12),
                           color: fbTextColorWhite.withOpacity(0.7),
                         ),

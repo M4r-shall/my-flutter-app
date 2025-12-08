@@ -2,6 +2,14 @@ import 'package:flutter/material.dart';
 import '../widgets/newsfeed_card.dart';
 import '../constants.dart';
 
+DateTime _parseDateString(String dateString) {
+  try {
+    return DateTime.parse('${DateTime.now().year} $dateString');
+  } catch (e) {
+    return DateTime.now(); 
+  }
+}
+
 class NewsfeedScreen extends StatelessWidget {
   const NewsfeedScreen({super.key});
 
@@ -12,6 +20,7 @@ class NewsfeedScreen extends StatelessWidget {
       'numOfLikes': 100,
       'date': 'September 15',
       'hasImage': false,
+      'profileImagePath': 'assets/images/marius.jpg',
     },
     {
       'userName': 'Pau',
@@ -19,6 +28,7 @@ class NewsfeedScreen extends StatelessWidget {
       'numOfLikes': 210,
       'date': 'October 28',
       'hasImage': true,
+      'profileImagePath': 'assets/images/pau.jpg',
     },
     {
       'userName': 'Shem',
@@ -26,6 +36,7 @@ class NewsfeedScreen extends StatelessWidget {
       'numOfLikes': 45,
       'date': 'November 30',
       'hasImage': false,
+      'profileImagePath': 'assets/images/nu.JPG',
     },
     {
       'userName': 'Mac',
@@ -33,6 +44,7 @@ class NewsfeedScreen extends StatelessWidget {
       'numOfLikes': 312,
       'date': 'December 5',
       'hasImage': true,
+      'profileImagePath': 'assets/images/mac.JPG',
     },
     {
       'userName': 'Vergie',
@@ -40,6 +52,7 @@ class NewsfeedScreen extends StatelessWidget {
       'numOfLikes': 312,
       'date': 'December 5',
       'hasImage': true,
+      'profileImagePath': 'assets/images/vergie.JPG',
     },
     {
       'userName': 'JB',
@@ -47,6 +60,7 @@ class NewsfeedScreen extends StatelessWidget {
       'numOfLikes': 312,
       'date': 'December 5',
       'hasImage': true,
+      'profileImagePath': 'assets/images/cat.jpg',
     },
     
   ];
@@ -61,8 +75,9 @@ class NewsfeedScreen extends StatelessWidget {
             userName: post['userName'] as String,
             postContent: post['postContent'] as String,
             numOfLikes: post['numOfLikes'] as int,
-            date: post['date'] as String,
+            date: _parseDateString(post['date'] as String),
             hasImage: post['hasImage'] as bool,
+            profileImagePath: post['profileImagePath'] as String,
           );
         }).toList(),
       ),

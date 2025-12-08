@@ -8,11 +8,15 @@ class Notification extends StatelessWidget {
     super.key,
     required this.name,
     required this.post,
-    required this.description});
+    required this.description,
+    this.profileImagePath,
+    });
+    
 
   final String name;
   final String post;
   final String description;
+  final String? profileImagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,12 @@ class Notification extends StatelessWidget {
       padding: EdgeInsets.all(ScreenUtil().setSp(15)),
       child: Row(
         children: [
-          Icon(
+          profileImagePath != null && profileImagePath!.isNotEmpty
+              ? CircleAvatar(
+                  radius: ScreenUtil().setSp(25),
+                  backgroundImage: AssetImage(profileImagePath!),
+                )
+         :Icon(
             Icons.person,
             size: ScreenUtil().setSp(50),
             color: fbTextColorWhite,
