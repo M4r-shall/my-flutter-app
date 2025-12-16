@@ -189,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           userName: 'Marius Clarence Panahon',
                           profileImagePath: 'assets/images/fbprofile.JPG',
                           date: DateTime.now().subtract(const Duration(hours: 2)),
-                          postContent: 'New Year, New me',
+                          postContent: 'anlala',
                           numOfLikes: 120,
                           hasImage: false,
                         ),
