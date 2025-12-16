@@ -59,9 +59,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       alignment: Alignment.bottomRight,
                       children: [
                         Container(
-                          padding: EdgeInsets.all(ScreenUtil().setWidth(4)),
+                          padding: EdgeInsets.all(ScreenUtil().setWidth(1)),
                           decoration: const BoxDecoration(
-                            color: Colors.white,
+                            color: fbDarkPrimary,
                             shape: BoxShape.circle,
                           ),
                           child: CircleAvatar(
@@ -141,7 +141,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     SizedBox(height: ScreenUtil().setHeight(15)),
 
-                    // Buttons
                     Row(
                       children: [
                         Expanded(
@@ -167,13 +166,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: ScreenUtil().setHeight(10)),
 
               TabBar(
-                indicatorColor: kFbDarkPrimary,
-                labelColor: kFbDarkPrimary,
+                indicatorColor: fbDarkPrimary,
+                labelColor: fbDarkPrimary,
                 unselectedLabelColor: Colors.grey,
                 tabs: [
-                  Tab(child: CustomFont(text: 'Posts', fontSize: 15, color: fbTextColorWhite)),
-                  Tab(child: CustomFont(text: 'About', fontSize: 15, color: fbTextColorWhite)),
-                  Tab(child: CustomFont(text: 'Photos', fontSize: 15, color: fbTextColorWhite)),
+                  Tab(child: CustomFont(text: 'Posts', fontSize: 15, color: fbSecondary)),
+                  Tab(child: CustomFont(text: 'About', fontSize: 15, color: fbSecondary)),
+                  Tab(child: CustomFont(text: 'Photos', fontSize: 15, color: fbSecondary)),
                 ],
               ),
 

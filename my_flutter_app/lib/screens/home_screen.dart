@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<String> _titles = const [
     'TFTalks',
     'Notifications',
-    'Profile',
+    'Marius Clarence Panahon',
   ];
 
   @override

@@ -12,7 +12,7 @@ class CustomButton extends StatefulWidget {
       {super.key,
       this.buttonType = 'elevated',
       required this.buttonName,
-      this.fontColor = Colors.black,
+      this.fontColor =fbLightPrimary,
       required this.onPressed,
       this.outlineColor = fbTextColorWhite});
 
@@ -41,7 +41,7 @@ class _CustomButtonState extends State<CustomButton> {
             text: widget.buttonName,
             fontSize: ScreenUtil().setSp(12),
             color: widget.fontColor),
-      ); // OutlinedButton
+      );
     } else if (widget.buttonType == 'text') {
       return TextButton(
         onPressed: widget.onPressed,
@@ -58,7 +58,7 @@ class _CustomButtonState extends State<CustomButton> {
             text: widget.buttonName,
             fontSize: ScreenUtil().setSp(12),
             color: widget.fontColor),
-      ); // TextButton
+      );
     } else {
       return ElevatedButton(
         onPressed: widget.onPressed,
