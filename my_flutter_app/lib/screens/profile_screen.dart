@@ -70,7 +70,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             backgroundImage: const AssetImage('assets/images/fbprofile.JPG'),
                           ),
                         ),
-                        // Camera Icon (Profile)
                         Positioned(
                           bottom: 5,
                           right: 5,
@@ -79,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             decoration: BoxDecoration(
                               color: Colors.grey[200],
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 2),
+                              border: Border.all(color: Colors.white, width: 4),
                             ),
                             child: const Icon(Icons.camera_alt, size: 18, color: Colors.black),
                           ),
@@ -149,7 +148,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: CustomButton(
                             buttonName: 'Follow',
                             onPressed: () {},
-                            // backgroundColor: Colors.blue, // Add this if you updated CustomButton
                           ),
                         ),
                         SizedBox(width: ScreenUtil().setWidth(10)),
@@ -188,28 +186,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
                       children: [
-                        // Post 1: Text Only (Current User)
                         PostCard(
                           userName: 'Marius Clarence Panahon',
                           profileImagePath: 'assets/images/fbprofile.JPG',
                           date: DateTime.now().subtract(const Duration(hours: 2)),
-                          postContent: 'New semester, new challenges. Let\'s get this TFTalks to a high grade!',
+                          postContent: 'New Year, New me',
                           numOfLikes: 120,
                           hasImage: false,
                         ),
 
-                        // Post 2: Pau (With Image)
                         PostCard(
                           userName: 'Marius Clarence Panahon',
                           profileImagePath: 'assets/images/fbprofile.JPG',
                           date: DateTime.now().subtract(const Duration(days: 1)),
-                          postContent: 'World traveling is amazing. What places should I visit next?',
+                          postContent: 'Bebe bebe ur my sun n moon',
                           numOfLikes: 85,
                           hasImage: true,
                           postImagePath: 'assets/images/pau.jpg',
                         ),
 
-                        // Post 3: Vergie (With Image)
                         PostCard(
                           userName: 'Marius Clarence Panahon',
                           profileImagePath: 'assets/images/fbprofile.JPG',
@@ -235,34 +230,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           SizedBox(height: 15.h),
 
-                          // Education
                           _buildAboutRow(Icons.school, 'Studies at', 'National University'),
                           _buildAboutRow(Icons.history_edu, 'Went to', 'Senior High School'),
-
-                          // Work
                           _buildAboutRow(Icons.work, 'Works at', 'Flutter Developer'),
-                          
-                          // Location
                           _buildAboutRow(Icons.home, 'Lives in', 'San Juan City, Philippines'),
                           _buildAboutRow(Icons.location_on, 'From', 'Manila, Philippines'),
-                          
-                          // Relationship
-                          _buildAboutRow(Icons.favorite, 'Single', ''),
-                          
-                          // Web/Links
+                          _buildAboutRow(Icons.favorite, 'Taken', ''),
                           _buildAboutRow(Icons.more_horiz, 'See your about info', ''),
 
                           SizedBox(height: 20.h),
                           
-                          // Edit Button
                           SizedBox(
                             width: double.infinity,
                             child: CustomButton(
                               buttonName: 'Edit public details',
                               onPressed: () {},
                               buttonType: 'outlined',
-                              outlineColor: Colors.blue, 
-                              fontColor: Colors.blue,
+                              outlineColor: fbPrimary, 
+                              fontColor: fbPrimary,
                             ),
                           ),
                         ],

@@ -102,7 +102,6 @@ class PostCard extends StatelessWidget {
             ),
 
             SizedBox(height: 10.h),
-            // post content
             CustomFont(
               text: postContent,
               fontSize: 14.sp,
@@ -120,7 +119,7 @@ class PostCard extends StatelessWidget {
                 ),
               ),
 
-Row(
+              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
@@ -136,7 +135,6 @@ Row(
             
             Divider(color: Colors.grey[600]),
 
-            // ACTION BUTTONS
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -148,12 +146,10 @@ Row(
 
             Divider(color: Colors.grey[600]),
 
-            // COMMENT FOOTER
             Row(
               children: [
                 const CircleAvatar(
                   radius: 15,
-                  // Using your 'owl.jpg' as the current user
                   backgroundImage: AssetImage('assets/images/fbprofile.JPG'), 
                 ),
                 SizedBox(width: 10.w),

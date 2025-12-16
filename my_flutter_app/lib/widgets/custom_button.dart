@@ -31,16 +31,16 @@ class _CustomButtonState extends State<CustomButton> {
           padding: EdgeInsets.symmetric(
             horizontal: ScreenUtil().setWidth(30),
             vertical: ScreenUtil().setHeight(10),
-          ), // EdgeInsets.symmetric
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-          ), // RoundedRectangleBorder
+          ),
           side: BorderSide(color: widget.outlineColor),
         ),
         child: CustomFont(
             text: widget.buttonName,
             fontSize: ScreenUtil().setSp(12),
-            color: widget.fontColor), // CustomFont
+            color: widget.fontColor),
       ); // OutlinedButton
     } else if (widget.buttonType == 'text') {
       return TextButton(
@@ -49,15 +49,15 @@ class _CustomButtonState extends State<CustomButton> {
           padding: EdgeInsets.symmetric(
             horizontal: ScreenUtil().setWidth(30),
             vertical: ScreenUtil().setHeight(10),
-          ), // EdgeInsets.symmetric
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-          ), // RoundedRectangleBorder
+          ),
         ),
         child: CustomFont(
             text: widget.buttonName,
             fontSize: ScreenUtil().setSp(12),
-            color: widget.fontColor), // CustomFont
+            color: widget.fontColor),
       ); // TextButton
     } else {
       return ElevatedButton(
@@ -66,16 +66,16 @@ class _CustomButtonState extends State<CustomButton> {
           padding: EdgeInsets.symmetric(
             horizontal: ScreenUtil().setWidth(30),
             vertical: ScreenUtil().setHeight(10),
-          ), // EdgeInsets.symmetric
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
-          ), // RoundedRectangleBorder
+          ),
         ),
         child: CustomFont(
             text: widget.buttonName,
             fontSize: ScreenUtil().setSp(12),
-            color: widget.fontColor), // CustomFont
-      ); // ElevatedButton
+            color: widget.fontColor),
+      ); 
     }
   }
 }
