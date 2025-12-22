@@ -1,4 +1,4 @@
-import '../widgets/notification.dart' as notif;
+import '../widgets/custom_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../constants.dart';
@@ -83,7 +83,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         children: dummyNotifications.map((notification) {
           return Column(
             children: [
-              notif.Notification(
+              CustomInformation(
                 name: notification['name'] as String,
                 post: notification['post'] as String,
                 description: notification['description'] as String,
