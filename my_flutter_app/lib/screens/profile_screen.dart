@@ -38,19 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         image: AssetImage('assets/images/fbwallpaper.JPG'),
                         fit: BoxFit.cover,
                       ),
-                    ),
-                    child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: Container(
-                        margin: EdgeInsets.all(ScreenUtil().setWidth(10)),
-                        padding: EdgeInsets.all(ScreenUtil().setWidth(5)),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                        ),
-                        child: const Icon(Icons.camera_alt, size: 20, color: Colors.black),
-                      ),
-                    ),
+                    ),       
                   ),
                   Positioned(
                     bottom: -ScreenUtil().setHeight(40),
