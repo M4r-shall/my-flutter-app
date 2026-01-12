@@ -28,7 +28,6 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
-  // Variable to track likes locally for Enhancement 3
   late int _currentLikes;
 
   @override
@@ -55,7 +54,6 @@ class _DetailScreenState extends State<DetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Post Image (if available)
             if (widget.hasImage && widget.postImagePath != null)
               SizedBox(
                 height: 300.h,
@@ -65,7 +63,6 @@ class _DetailScreenState extends State<DetailScreen> {
             
             SizedBox(height: 20.h),
 
-            // Profile Header
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Row(

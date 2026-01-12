@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // REQUIRED: Add this import for DateFormat
 import '../widgets/newsfeed_card.dart';
 import '../constants.dart';
 
-DateTime _parseDateString(String dateString) {
-  try {
-    return DateTime.parse('${DateTime.now().year} $dateString');
-  } catch (e) {
-    return DateTime.now(); 
-  }
-}
-
 class NewsfeedScreen extends StatelessWidget {
   const NewsfeedScreen({super.key});
+
+  // BUG FIX: Correctly parse dates like "September 15"
+  DateTime _parseDateString(String dateString) {
+    try {
+      // Parses "Month Day" format (e.g., "September 15")
+      DateTime parsedDate = DateFormat('MMMM d').parse(dateString);
+      // Combine with the current year
+      return DateTime(DateTime.now().year, parsedDate.month, parsedDate.day);
+    } catch (e) {
+      // Fallback if parsing fails
+      return DateTime.now(); 
+    }
+  }
 
   final List<Map<String, dynamic>> dummyPosts = const [
     {
@@ -62,7 +68,6 @@ class NewsfeedScreen extends StatelessWidget {
       'hasImage': true,
       'profileImagePath': 'assets/images/cat.jpg',
     },
-    
   ];
 
   @override
@@ -75,6 +80,7 @@ class NewsfeedScreen extends StatelessWidget {
             userName: post['userName'] as String,
             postContent: post['postContent'] as String,
             numOfLikes: post['numOfLikes'] as int,
+            // Apply the fixed date parser
             date: _parseDateString(post['date'] as String),
             hasImage: post['hasImage'] as bool,
             profileImagePath: post['profileImagePath'] as String,
