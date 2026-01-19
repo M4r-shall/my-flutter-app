@@ -17,12 +17,60 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController mobilenumController = TextEditingController();
-  TextEditingController usernameController = TextEditingController();
+  TextEditingController usernameController = TextEditingController(); // Added missing controller usage if needed
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmpasswordController = TextEditingController();
 
   void register() {
-    //TODO: Create your own validation
+   
+    if (firstnameController.text.isEmpty ||
+        lastnameController.text.isEmpty ||
+        mobilenumController.text.isEmpty ||
+        passwordController.text.isEmpty ||
+        confirmpasswordController.text.isEmpty) {
+      customDialog(
+        context,
+        title: 'Error',
+        content: 'All fields are required to continue.',
+      );
+      return;
+    }
+
+    if (mobilenumController.text.length != 11) {
+      customDialog(
+        context,
+        title: 'Error',
+        content: 'The mobile number must be 11 digit',
+      );
+      return;
+    }
+    String passwordPattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$&*~]).{8,}$';
+    RegExp regExp = RegExp(passwordPattern);
+
+    if (!regExp.hasMatch(passwordController.text)) {
+      customDialog(
+        context,
+        title: 'Error',
+        content: 'Password should be 8 characters, a mixture of letter and numbers '
+                 'consisting of at least one special character with Uppercase and Lowercase letters.',
+      );
+      return;
+    }
+
+    // 4. Validate Confirm Password Match
+    if (passwordController.text != confirmpasswordController.text) {
+      customDialog(
+        context,
+        title: 'Error',
+        content: 'Passwords do not match.',
+      );
+      return;
+    }
+
+    // 5. Success - Navigate to Login or Home
+    // For now, we pop back to the previous screen (Login) or you can push to Home.
+    Navigator.pop(context); 
+    // Or use: Navigator.pushNamed(context, '/login');
   }
 
   @override
@@ -53,8 +101,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               CustomTextFormField(
                 height: ScreenUtil().setHeight(10),
                 width: ScreenUtil().setWidth(10),
-                onSaved: null,
-                fontColor: null,
+                onSaved: (value) {},
+                fontColor: fbDarkPrimary,
                 hintText: 'First name',
                 validator: (value) => null,
                 hintTextSize: ScreenUtil().setSp(15),
@@ -67,8 +115,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               CustomTextFormField(
                 height: ScreenUtil().setHeight(10),
                 width: ScreenUtil().setWidth(10),
-                onSaved: null,
-                fontColor: null,
+                onSaved: (value) {},
+                fontColor: fbDarkPrimary,
                 hintText: 'Last name',
                 validator: (value) => null,
                 hintTextSize: ScreenUtil().setSp(15),
@@ -83,8 +131,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 keyboardType: TextInputType.number,
                 height: ScreenUtil().setHeight(10),
                 width: ScreenUtil().setWidth(10),
-                onSaved: null,
-                fontColor: null,
+                onSaved: (value) {},
+                fontColor: fbDarkPrimary,
                 hintText: 'Mobile Num',
                 validator: (value) => null,
                 hintTextSize: ScreenUtil().setSp(15),
@@ -93,13 +141,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: ScreenUtil().setHeight(10)),
 
-              // Password Field
+              // Password Field (with Enhancement 1: isObscure toggling handled inside widget)
               CustomTextFormField(
                 isObscure: true,
                 height: ScreenUtil().setHeight(10),
                 width: ScreenUtil().setWidth(10),
-                onSaved: null,
-                fontColor: null,
+                onSaved: (value) {},
+                fontColor: fbDarkPrimary,
                 hintText: 'Password',
                 validator: (value) => null,
                 hintTextSize: ScreenUtil().setSp(15),
@@ -122,8 +170,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 hintText: 'Confirm Password',
                 height: ScreenUtil().setHeight(10),
                 width: ScreenUtil().setWidth(10),
-                onSaved: null,
-                fontColor: null,
+                onSaved: (value) {},
+                fontColor: fbDarkPrimary,
                 validator: (value) => null,
                 hintTextSize: ScreenUtil().setSp(15),
                 fontSize: ScreenUtil().setSp(15),
