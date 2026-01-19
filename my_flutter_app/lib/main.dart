@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:panahon_mobprog/screens/detail_screen.dart';
 import 'package:panahon_mobprog/screens/home_screen.dart';
 import 'package:panahon_mobprog/screens/newsfeed_screen.dart';
 
@@ -21,10 +22,12 @@ class MainApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'TFTalks',
-          initialRoute: '/home',
+          initialRoute: '/login',
           routes: {
-            '/newsfeed': (context) => const NewsfeedScreen(),
             '/home': (context) => const HomeScreen(),
+            '/detail': (context) => const DetailScreen(),
+            '/login': (context) => const LoginScreen(),
+            '/register': (context) => const RegisterScreen(),
           },
         );
       },
