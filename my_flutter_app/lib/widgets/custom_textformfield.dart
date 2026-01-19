@@ -4,100 +4,126 @@ import 'package:flutter/services.dart';
 import '../constants.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
-class CustomTextFormField extends StatelessWidget {
-  CustomTextFormField(
-      {super.key,
-      required this.validator,
-      required this.onSaved,
-      this.controller,
-      this.isObscure = false,
-      required this.fontSize,
-      required this.fontColor,
-      this.hintTextSize = 12,
-      this.hintText = '',
-      this.fillColor = Colors.black12,
-      required this.height,
-      required this.width,
-      this.keyboardType = TextInputType.text,
-      this.maxLength = 200});
+class CustomTextFormField extends StatefulWidget {
+  const CustomTextFormField({
+    super.key,
+    required this.validator,
+    required this.onSaved,
+    this.controller,
+    this.isObscure = false, 
+    required this.fontSize,
+    required this.fontColor,
+    this.hintTextSize = 12.0,
+    this.hintText = '',
+    this.fillColor = Colors.black12,
+    required this.height,
+    required this.width,
+    this.keyboardType = TextInputType.text,
+    this.maxLength = 200,
+  });
 
-  final validator;
-  final onSaved;
-  final controller;
-  final isObscure;
-  final fontSize;
-  final fontColor;
-  final double height, width;
-  final hintTextSize;
-  final hintText;
-  final fillColor;
-  TextInputType keyboardType;
-  int maxLength;
+  final String? Function(String?) validator;
+  final void Function(String?) onSaved;
+  final TextEditingController? controller;
+  final bool isObscure;
+  final double fontSize;
+  final Color fontColor;
+  final double height;
+  final double width;
+  final double hintTextSize;
+  final String hintText;
+  final Color fillColor;
+  final TextInputType keyboardType;
+  final int maxLength;
+
+  @override
+  State<CustomTextFormField> createState() => _CustomTextFormFieldState();
+}
+
+class _CustomTextFormFieldState extends State<CustomTextFormField> {
+  late bool _obscureText;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = widget.isObscure;
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      validator: validator,
-      onSaved: onSaved,
-      controller: controller,
-      obscureText: isObscure,
-      keyboardType: keyboardType,
+      validator: widget.validator,
+      onSaved: widget.onSaved,
+      controller: widget.controller,
+      obscureText: _obscureText,
+      keyboardType: widget.keyboardType,
       inputFormatters: [
-        LengthLimitingTextInputFormatter(maxLength),
+        LengthLimitingTextInputFormatter(widget.maxLength),
       ],
       style: TextStyle(
-        fontSize: fontSize,
-        color: fontColor,
+        fontSize: widget.fontSize,
+        color: widget.fontColor,
       ),
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(width, height, width, height),
+        // 1. Reduce the vertical height of the field
+        isDense: true, 
+        
+        // 2. Force the icon to take up less space
+        suffixIconConstraints: const BoxConstraints(
+          minWidth: 35,
+          minHeight: 35,
+        ),
+        
+        contentPadding: EdgeInsets.fromLTRB(
+            widget.width, widget.height, widget.width, widget.height),
         focusColor: Colors.black12,
         enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: fbDarkPrimary,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
-          ),
+          borderSide: BorderSide(color: fbDarkPrimary, width: 2),
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
         errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.red,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
-          ),
+          borderSide: BorderSide(color: Colors.red, width: 2),
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
         errorStyle: const TextStyle(fontFamily: 'Frutiger'),
         focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.red,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
-          ),
+          borderSide: BorderSide(color: Colors.red, width: 2),
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
         focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: fbLightPrimary,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.all(
-            Radius.circular(10.0),
-          ),
+          borderSide: BorderSide(color: fbLightPrimary, width: 2),
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
         ),
         filled: true,
         hintStyle: TextStyle(
           color: Colors.black12,
-          fontSize: hintTextSize,
+          fontSize: widget.hintTextSize,
           fontFamily: 'Frutiger',
         ),
-        hintText: hintText,
-        fillColor: fillColor,
+        hintText: widget.hintText,
+        fillColor: widget.fillColor,
+
+        // 3. Compact Icon Logic
+        suffixIcon: widget.isObscure
+            ? Padding(
+                padding: const EdgeInsets.only(right: 8.0), // Slight padding from edge
+                child: IconButton(
+                  // Remove internal padding of the button
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(), 
+                  icon: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                    color: fbDarkPrimary,
+                    size: 20, // Smaller icon size
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                ),
+              )
+            : null,
       ),
     );
   }

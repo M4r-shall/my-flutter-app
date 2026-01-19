@@ -28,7 +28,6 @@ class _LogInScreenState extends State<LogInScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Top header bar
                 Container(
                   width: ScreenUtil().screenWidth,
                   height: ScreenUtil().setHeight(40),
@@ -41,29 +40,24 @@ class _LogInScreenState extends State<LogInScreen> {
                   child: Column(
                     children: [
                       Image.asset(
-                        'assets/images/cat angry.png',
+                        'assets/images/cat.jpg',
                         height: ScreenUtil().setHeight(200),
                       ),
-                      SizedBox(
-                        height: ScreenUtil().setHeight(30),
-                      ),
-                      // Username Field
+                      SizedBox(height: ScreenUtil().setHeight(30)),
                       CustomTextFormField(
                         height: ScreenUtil().setHeight(10),
                         width: ScreenUtil().setWidth(10),
                         controller: usernameController,
                         validator: (value) =>
                             value!.isEmpty ? 'Enter your username' : null,
-                        onSaved: (value) => usernameController = value!,
+                        // We use the controller directly, so onSaved isn't strictly necessary here
+                        onSaved: (value) {}, 
                         fontSize: ScreenUtil().setSp(15),
                         fontColor: fbDarkPrimary,
                         hintTextSize: ScreenUtil().setSp(15),
                         hintText: 'Username',
                       ),
-                      SizedBox(
-                        height: ScreenUtil().setHeight(10),
-                      ),
-                      // Password Field
+                      SizedBox(height: ScreenUtil().setHeight(10)),
                       CustomTextFormField(
                         height: ScreenUtil().setHeight(10),
                         width: ScreenUtil().setWidth(10),
@@ -71,19 +65,28 @@ class _LogInScreenState extends State<LogInScreen> {
                         isObscure: true,
                         validator: (value) =>
                             value!.isEmpty ? 'Enter your password' : null,
-                        onSaved: (value) => passwordController = value!,
+                        onSaved: (value) {},
                         fontSize: ScreenUtil().setSp(15),
                         fontColor: fbDarkPrimary,
                         hintTextSize: ScreenUtil().setSp(15),
                         hintText: 'Password',
                       ),
                       SizedBox(height: ScreenUtil().setHeight(50)),
-                      // Login Button
+                      
+                      // ENHANCEMENT 3 START: Sending Data
                       CustomInkwellButton(
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
-                            // Handle login logic here
+                            
+                            // Pass the username to the Home Route
+                            Navigator.pushReplacementNamed(
+                              context, 
+                              '/home',
+                              arguments: {
+                                'username': usernameController.text
+                              }
+                            );
                           }
                         },
                         height: ScreenUtil().setHeight(40),
@@ -91,10 +94,10 @@ class _LogInScreenState extends State<LogInScreen> {
                         buttonName: 'Login',
                         fontSize: ScreenUtil().setSp(15),
                       ),
+                      // ENHANCEMENT 3 END
                     ],
                   ),
                 ),
-                // Footer / Registration Link
                 Container(
                   width: ScreenUtil().screenWidth,
                   height: ScreenUtil().setHeight(40),

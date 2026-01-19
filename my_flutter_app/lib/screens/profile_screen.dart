@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:panahon_mobprog/constants.dart';
+import '../constants.dart'; // Make sure this import path matches your folder structure
 import '../widgets/custom_font.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/post_card.dart';
 
-const Color kFbDarkPrimary = Color(0xFF2A2F3D);
-
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  // 1. Add the variable to hold the data
+  final String username;
+
+  // 2. Update the constructor to require this variable
+  const ProfileScreen({
+    super.key, 
+    required this.username
+  });
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -83,9 +88,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Name
+                    // 3. USE THE VARIABLE HERE (widget.username)
                     CustomFont(
-                      text: 'Marius Clarence Panahon',
+                      text: widget.username, 
                       fontWeight: FontWeight.bold,
                       fontSize: ScreenUtil().setSp(24),
                       color: fbTextColorWhite,
@@ -168,22 +173,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: ScreenUtil().setHeight(1500),
                 child: TabBarView(
                   children: [
-
                     ListView(
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
                       children: [
                         PostCard(
-                          userName: 'Marius Clarence Panahon',
+                          userName: widget.username, // Use dynamic name here too if you want
                           profileImagePath: 'assets/images/fbprofile.JPG',
                           date: DateTime.now().subtract(const Duration(hours: 2)),
                           postContent: 'anlala',
                           numOfLikes: 120,
                           hasImage: false,
                         ),
-
                         PostCard(
-                          userName: 'Marius Clarence Panahon',
+                          userName: widget.username,
                           profileImagePath: 'assets/images/fbprofile.JPG',
                           date: DateTime.now().subtract(const Duration(days: 1)),
                           postContent: 'Bebe bebe ur my sun n moon',
@@ -191,21 +194,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           hasImage: true,
                           postImagePath: 'assets/images/pau.jpg',
                         ),
-
-                        PostCard(
-                          userName: 'Marius Clarence Panahon',
-                          profileImagePath: 'assets/images/fbprofile.JPG',
-                          date: DateTime.now().subtract(const Duration(days: 3)),
-                          postContent: 'Enjoying the beautiful scenery!',
-                          numOfLikes: 200,
-                          hasImage: true,
-                          postImagePath: 'assets/images/cat wire.jpg',
-                        ),
+                         // ... add more posts if needed
                       ],
                     ),
 
                     SingleChildScrollView(
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -240,6 +234,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
+                    
                     GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -264,8 +259,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-}
-Widget _buildAboutRow(IconData icon, String label, String value) {
+
+  Widget _buildAboutRow(IconData icon, String label, String value) {
     return Padding(
       padding: EdgeInsets.only(bottom: 15.h),
       child: Row(
@@ -291,3 +286,4 @@ Widget _buildAboutRow(IconData icon, String label, String value) {
       ),
     );
   }
+}
