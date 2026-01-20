@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../constants.dart'; // Make sure this import path matches your folder structure
+import '../constants.dart';
 import '../widgets/custom_font.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/post_card.dart';
 
 class ProfileScreen extends StatefulWidget {
-  // 1. Add the variable to hold the data
   final String username;
 
-  // 2. Update the constructor to require this variable
   const ProfileScreen({
     super.key, 
     required this.username
@@ -88,7 +86,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 3. USE THE VARIABLE HERE (widget.username)
                     CustomFont(
                       text: widget.username, 
                       fontWeight: FontWeight.bold,
@@ -194,7 +191,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           hasImage: true,
                           postImagePath: 'assets/images/pau.jpg',
                         ),
-                         // ... add more posts if needed
                       ],
                     ),
 

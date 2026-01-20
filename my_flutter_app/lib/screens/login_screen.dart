@@ -40,7 +40,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   child: Column(
                     children: [
                       Image.asset(
-                        'assets/images/cat.jpg',
+                        'assets/images/NUCCITLogo_Black.png',
                         height: ScreenUtil().setHeight(200),
                       ),
                       SizedBox(height: ScreenUtil().setHeight(30)),
@@ -50,7 +50,6 @@ class _LogInScreenState extends State<LogInScreen> {
                         controller: usernameController,
                         validator: (value) =>
                             value!.isEmpty ? 'Enter your username' : null,
-                        // We use the controller directly, so onSaved isn't strictly necessary here
                         onSaved: (value) {}, 
                         fontSize: ScreenUtil().setSp(15),
                         fontColor: fbDarkPrimary,
@@ -73,13 +72,11 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                       SizedBox(height: ScreenUtil().setHeight(50)),
                       
-                      // ENHANCEMENT 3 START: Sending Data
                       CustomInkwellButton(
                         onTap: () {
                           if (_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
                             
-                            // Pass the username to the Home Route
                             Navigator.pushReplacementNamed(
                               context, 
                               '/home',
@@ -94,7 +91,6 @@ class _LogInScreenState extends State<LogInScreen> {
                         buttonName: 'Login',
                         fontSize: ScreenUtil().setSp(15),
                       ),
-                      // ENHANCEMENT 3 END
                     ],
                   ),
                 ),

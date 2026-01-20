@@ -65,10 +65,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         color: widget.fontColor,
       ),
       decoration: InputDecoration(
-        // 1. Reduce the vertical height of the field
         isDense: true, 
-        
-        // 2. Force the icon to take up less space
         suffixIconConstraints: const BoxConstraints(
           minWidth: 35,
           minHeight: 35,
@@ -103,18 +100,16 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         hintText: widget.hintText,
         fillColor: widget.fillColor,
 
-        // 3. Compact Icon Logic
         suffixIcon: widget.isObscure
             ? Padding(
-                padding: const EdgeInsets.only(right: 8.0), // Slight padding from edge
+                padding: const EdgeInsets.only(right: 8.0),
                 child: IconButton(
-                  // Remove internal padding of the button
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(), 
                   icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
                     color: fbDarkPrimary,
-                    size: 20, // Smaller icon size
+                    size: 20,
                   ),
                   onPressed: () {
                     setState(() {

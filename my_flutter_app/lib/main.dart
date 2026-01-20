@@ -28,9 +28,7 @@ class MainApp extends StatelessWidget {
             '/home': (context) => const HomeScreen(),
             '/login': (context) => const LogInScreen(),
             '/register': (context) => const RegisterScreen(),
-            // REMOVE the static '/detail' route from here
           },
-          // Add onGenerateRoute to handle dynamic data for DetailScreen
           onGenerateRoute: (settings) {
             if (settings.name == '/detail') {
               final args = settings.arguments as Map<String, dynamic>;

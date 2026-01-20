@@ -17,7 +17,6 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
 
-  // These lists are now 'late' because they depend on data passed at runtime
   late List<Widget> _screens;
   late List<String> _titles;
   late String _currentUser;
@@ -26,24 +25,21 @@ class _HomeScreenState extends State<HomeScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // 1. Retrieve arguments passed from LoginScreen
     final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     
-    // 2. Extract username (use a default if null)
+
     _currentUser = args?['username'] ?? 'Marius Clarence Panahon';
 
-    // 3. Initialize the screens, passing the username to ProfileScreen
     _screens = [
       const NewsfeedScreen(),
       const NotificationScreen(),
-      ProfileScreen(username: _currentUser), // Passing data here
+      ProfileScreen(username: _currentUser),
     ];
 
-    // 4. Initialize titles, using the dynamic username for the 3rd tab
     _titles = [
       'TFTalks',
       'Notifications',
-      _currentUser, // Dynamic Title
+      _currentUser,
     ];
   }
 
@@ -61,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
         shadowColor: fbTextColorWhite,
         elevation: 2,
         title: CustomFont(
-          text: _titles[_selectedIndex], // Uses the dynamic list
+          text: _titles[_selectedIndex],
           fontSize: ScreenUtil().setSp(25),
           color: fbSecondary,
           fontFamily: 'Klavika',

@@ -17,12 +17,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController firstnameController = TextEditingController();
   TextEditingController lastnameController = TextEditingController();
   TextEditingController mobilenumController = TextEditingController();
-  TextEditingController usernameController = TextEditingController(); // Added missing controller usage if needed
+  TextEditingController usernameController = TextEditingController(); 
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmpasswordController = TextEditingController();
 
   void register() {
-   
     if (firstnameController.text.isEmpty ||
         lastnameController.text.isEmpty ||
         mobilenumController.text.isEmpty ||
@@ -44,6 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       );
       return;
     }
+
     String passwordPattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#\$&*~]).{8,}$';
     RegExp regExp = RegExp(passwordPattern);
 
@@ -57,7 +57,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    // 4. Validate Confirm Password Match
     if (passwordController.text != confirmpasswordController.text) {
       customDialog(
         context,
@@ -67,10 +66,32 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
 
-    // 5. Success - Navigate to Login or Home
-    // For now, we pop back to the previous screen (Login) or you can push to Home.
-    Navigator.pop(context); 
-    // Or use: Navigator.pushNamed(context, '/login');
+    String fullName = "${firstnameController.text} ${lastnameController.text}";
+
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => AlertDialog(
+        title: const Text("Success"),
+        content: const Text("Account created successfully! Logging you in..."),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              
+              Navigator.pushNamedAndRemoveUntil(
+                context, 
+                '/home', 
+                (route) => false, // Remove back history so back button exits app
+                arguments: {'username': fullName} 
+              );
+            },
+            child: const Text("Okay", style: TextStyle(color: fbDarkPrimary)),
+          )
+        ],
+      ),
+    );
   }
 
   @override
@@ -141,7 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: ScreenUtil().setHeight(10)),
 
-              // Password Field (with Enhancement 1: isObscure toggling handled inside widget)
+              // Password Field
               CustomTextFormField(
                 isObscure: true,
                 height: ScreenUtil().setHeight(10),
@@ -179,7 +200,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const Spacer(),
 
-              // Login Redirect
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -205,7 +225,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               SizedBox(height: ScreenUtil().setHeight(10)),
 
-              // Submit Button
               CustomInkwellButton(
                 onTap: () => register(),
                 height: ScreenUtil().setHeight(45),
