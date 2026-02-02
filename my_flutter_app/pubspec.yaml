@@ -7,6 +7,8 @@ environment:
   sdk: ^3.10.1
 
 dependencies:
+  cached_network_image: ^3.4.1
+  carousel_slider: ^5.1.1
   flutter:
     sdk: flutter
   flutter_screenutil: ^5.9.3

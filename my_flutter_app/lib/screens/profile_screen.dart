@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cached_network_image/cached_network_image.dart'; // Import this
 import '../constants.dart';
 import '../widgets/custom_font.dart';
 import '../widgets/custom_button.dart';
@@ -18,6 +19,10 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  // URLs for Enhancement 3 (Network Images)
+  final String coverImageUrl = "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80";
+  final String profileImageUrl = "https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80";
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -36,9 +41,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     height: ScreenUtil().setHeight(200),
                     width: double.infinity,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      image: const DecorationImage(
-                        image: AssetImage('assets/images/fbwallpaper.JPG'),
+                      color: Colors.grey[800],
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(coverImageUrl),
                         fit: BoxFit.cover,
                       ),
                     ),       
@@ -50,15 +55,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       alignment: Alignment.bottomRight,
                       children: [
                         Container(
-                          padding: EdgeInsets.all(ScreenUtil().setWidth(1)),
+                          padding: EdgeInsets.all(ScreenUtil().setWidth(4)),
                           decoration: const BoxDecoration(
                             color: fbDarkPrimary,
                             shape: BoxShape.circle,
                           ),
                           child: CircleAvatar(
                             radius: ScreenUtil().setWidth(50),
-                            backgroundColor: Colors.grey[200],
-                            backgroundImage: const AssetImage('assets/images/fbprofile.JPG'),
+                            backgroundColor: Colors.grey[800],
+                            backgroundImage: CachedNetworkImageProvider(profileImageUrl),
                           ),
                         ),
                         Positioned(
@@ -69,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             decoration: BoxDecoration(
                               color: Colors.grey[200],
                               shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 4),
+                              border: Border.all(color: Colors.white, width: 2),
                             ),
                             child: const Icon(Icons.camera_alt, size: 18, color: Colors.black),
                           ),
@@ -156,13 +161,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(height: ScreenUtil().setHeight(10)),
 
               TabBar(
-                indicatorColor: fbDarkPrimary,
-                labelColor: fbDarkPrimary,
+                indicatorColor: fbPrimary,
+                labelColor: fbPrimary,
                 unselectedLabelColor: Colors.grey,
                 tabs: [
-                  Tab(child: CustomFont(text: 'Posts', fontSize: 15, color: fbSecondary)),
-                  Tab(child: CustomFont(text: 'About', fontSize: 15, color: fbSecondary)),
-                  Tab(child: CustomFont(text: 'Photos', fontSize: 15, color: fbSecondary)),
+                  Tab(child: CustomFont(text: 'Posts', fontSize: 15, color: fbTextColorWhite)),
+                  Tab(child: CustomFont(text: 'About', fontSize: 15, color: fbTextColorWhite)),
+                  Tab(child: CustomFont(text: 'Photos', fontSize: 15, color: fbTextColorWhite)),
                 ],
               ),
 
@@ -170,26 +175,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: ScreenUtil().setHeight(1500),
                 child: TabBarView(
                   children: [
+                    // --- TAB 1: POSTS ---
                     ListView(
                       physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero,
                       children: [
                         PostCard(
-                          userName: widget.username, // Use dynamic name here too if you want
-                          profileImagePath: 'assets/images/fbprofile.JPG',
+                          userName: widget.username,
+                          profileImagePath: profileImageUrl,
                           date: DateTime.now().subtract(const Duration(hours: 2)),
-                          postContent: 'anlala',
-                          numOfLikes: 120,
+                          postContent: 'Just updated my profile picture! #NewLook',
+                          initialLikes: 120,
                           hasImage: false,
                         ),
                         PostCard(
                           userName: widget.username,
-                          profileImagePath: 'assets/images/fbprofile.JPG',
+                          profileImagePath: profileImageUrl,
                           date: DateTime.now().subtract(const Duration(days: 1)),
                           postContent: 'Bebe bebe ur my sun n moon',
-                          numOfLikes: 85,
+                          initialLikes: 85,
                           hasImage: true,
-                          postImagePath: 'assets/images/pau.jpg',
+                          postImagePath: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
                         ),
                       ],
                     ),
@@ -216,7 +222,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           _buildAboutRow(Icons.more_horiz, 'See your about info', ''),
 
                           SizedBox(height: 20.h),
-                          
                           SizedBox(
                             width: double.infinity,
                             child: CustomButton(
@@ -241,8 +246,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       itemCount: 12,
                       itemBuilder: (context, index) {
                         return Container(
-                          color: Colors.grey[300],
-                          child: Image.asset('assets/images/kchain.JPG', fit: BoxFit.cover),
+                          color: Colors.grey[800],
+                          child: CachedNetworkImage(
+                            imageUrl: 'https://images.unsplash.com/photo-150${index}525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80',
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                            errorWidget: (context, url, error) => const Icon(Icons.error, color: Colors.grey),
+                          ),
                         );
                       },
                     ),
