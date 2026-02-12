@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cached_network_image/cached_network_image.dart'; // Import this
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:intl/intl.dart';
 import '../constants.dart';
 import '../widgets/custom_font.dart';
 import '../widgets/custom_button.dart';
@@ -19,7 +20,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  // URLs for Enhancement 3 (Network Images)
   final String coverImageUrl = "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80";
   final String profileImageUrl = "https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80";
 
@@ -37,16 +37,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 clipBehavior: Clip.none,
                 alignment: Alignment.bottomLeft,
                 children: [
+                  // --- ENHANCEMENT 3: COVER PHOTO WITH LOADING ---
                   Container(
                     height: ScreenUtil().setHeight(200),
                     width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.grey[800],
-                      image: DecorationImage(
-                        image: CachedNetworkImageProvider(coverImageUrl),
-                        fit: BoxFit.cover,
+                    child: CachedNetworkImage(
+                      imageUrl: coverImageUrl,
+                      fit: BoxFit.cover,
+                      // Matches the thin loading style of your Photos Tab
+                      progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+                        child: CircularProgressIndicator(
+                          value: downloadProgress.progress,
+                          strokeWidth: 2, 
+                          color: fbPrimary,
+                        ),
                       ),
-                    ),       
+                      errorWidget: (context, url, error) => Container(
+                        color: Colors.grey[800],
+                        child: const Icon(Icons.error, color: Colors.white),
+                      ),
+                    ),
                   ),
                   Positioned(
                     bottom: -ScreenUtil().setHeight(40),
@@ -60,10 +70,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             color: fbDarkPrimary,
                             shape: BoxShape.circle,
                           ),
+                          // --- ENHANCEMENT 3: PROFILE PHOTO WITH LOADING ---
                           child: CircleAvatar(
                             radius: ScreenUtil().setWidth(50),
                             backgroundColor: Colors.grey[800],
-                            backgroundImage: CachedNetworkImageProvider(profileImageUrl),
+                            child: ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl: profileImageUrl,
+                                width: ScreenUtil().setWidth(100),
+                                height: ScreenUtil().setWidth(100),
+                                fit: BoxFit.cover,
+                                // Matches the thin loading style of your Photos Tab
+                                progressIndicatorBuilder: (context, url, downloadProgress) => Center(
+                                  child: CircularProgressIndicator(
+                                    value: downloadProgress.progress,
+                                    strokeWidth: 2,
+                                    color: fbPrimary,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) => const Icon(Icons.error),
+                              ),
+                            ),
                           ),
                         ),
                         Positioned(
@@ -116,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           fontWeight: FontWeight.w100,
                         ),
                         SizedBox(width: ScreenUtil().setWidth(15)),
-                        Icon(Icons.circle, size: 5, color: fbTextColorWhite),
+                        const Icon(Icons.circle, size: 5, color: fbTextColorWhite),
                         SizedBox(width: ScreenUtil().setWidth(15)),
                         CustomFont(
                           text: '1',
@@ -165,9 +192,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 labelColor: fbPrimary,
                 unselectedLabelColor: Colors.grey,
                 tabs: [
-                  Tab(child: CustomFont(text: 'Posts', fontSize: 15, color: fbTextColorWhite)),
-                  Tab(child: CustomFont(text: 'About', fontSize: 15, color: fbTextColorWhite)),
-                  Tab(child: CustomFont(text: 'Photos', fontSize: 15, color: fbTextColorWhite)),
+                  Tab(child: CustomFont(text: 'Posts', fontSize: 15.sp, color: fbTextColorWhite)),
+                  Tab(child: CustomFont(text: 'About', fontSize: 15.sp, color: fbTextColorWhite)),
+                  Tab(child: CustomFont(text: 'Photos', fontSize: 15.sp, color: fbTextColorWhite)),
                 ],
               ),
 
@@ -200,6 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
 
+                    // --- TAB 2: ABOUT ---
                     SingleChildScrollView(
                       padding: const EdgeInsets.all(20),
                       child: Column(
@@ -222,6 +250,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           _buildAboutRow(Icons.more_horiz, 'See your about info', ''),
 
                           SizedBox(height: 20.h),
+                          
                           SizedBox(
                             width: double.infinity,
                             child: CustomButton(
@@ -236,6 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     
+                    // --- TAB 3: PHOTOS ---
                     GridView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -250,7 +280,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: CachedNetworkImage(
                             imageUrl: 'https://images.unsplash.com/photo-150${index}525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80',
                             fit: BoxFit.cover,
-                            placeholder: (context, url) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                            placeholder: (context, url) => const Center(
+                              child: CircularProgressIndicator(strokeWidth: 2)
+                            ),
                             errorWidget: (context, url, error) => const Icon(Icons.error, color: Colors.grey),
                           ),
                         );

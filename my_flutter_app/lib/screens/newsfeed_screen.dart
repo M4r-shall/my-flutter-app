@@ -50,7 +50,7 @@ class NewsfeedScreen extends StatelessWidget {
         addMarket: "SERVICE",
         hasImage: true,
         postImagePath:
-            "https://images.unsplash.com/photo-1628009368231-760335298025?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
         profileImagePath:
             "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
       ),
@@ -149,7 +149,7 @@ class NewsfeedScreen extends StatelessWidget {
     for (int i = 0; i < newsCards.length; i++) {
       combinedContent.add(newsCards[i]);
 
-      // Alternating Ads logic
+    
       if (i == 0 || i == 2 || i == 4) {
         combinedContent.add(
           Column(

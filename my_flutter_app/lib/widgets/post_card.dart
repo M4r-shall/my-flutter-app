@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../constants.dart';
 import 'custom_font.dart';
-
+import '../screens/detail_screen.dart';
 
 class ActionButton extends StatelessWidget {
   final IconData icon;
@@ -151,7 +151,24 @@ class _PostCardState extends State<PostCard> {
         : AssetImage(widget.profileImagePath) as ImageProvider;
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        // --- ADDED NAVIGATION ---
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DetailScreen(
+              userName: widget.userName,
+              postContent: widget.postContent,
+              date: widget.date,
+              numOfLikes: _currentLikes,
+              hasImage: widget.hasImage,
+              profileImagePath: widget.profileImagePath,
+              postImagePath: widget.postImagePath,
+              // addMarket: widget.addMarket, // Uncomment if DetailScreen supports it
+            ),
+          ),
+        );
+      },
       child: Card(
         color: fbLightPrimary,
         margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10),
