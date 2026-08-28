@@ -31,6 +31,7 @@ class ActionButton extends StatelessWidget {
 }
 
 class PostCard extends StatefulWidget {
+  final int postId;
   final String userName;
   final String postContent;
   final DateTime date;
@@ -42,6 +43,7 @@ class PostCard extends StatefulWidget {
 
   const PostCard({
     super.key,
+    this.postId = 0,
     required this.userName,
     required this.postContent,
     this.initialLikes = 0,
@@ -157,6 +159,7 @@ class _PostCardState extends State<PostCard> {
           context,
           MaterialPageRoute(
             builder: (context) => DetailScreen(
+              postId: widget.postId,
               userName: widget.userName,
               postContent: widget.postContent,
               date: widget.date,

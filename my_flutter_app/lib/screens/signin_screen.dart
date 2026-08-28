@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../constants.dart';
 import '../widgets/custom_inkwell_button.dart';
+import '../services/user_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -15,6 +17,47 @@ class _LogInScreenState extends State<LogInScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _isLoading = false;
+
+  Future<void> _handleLogin() async {
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+      
+      setState(() => _isLoading = true);
+      try {
+        final user = await UserService().login(
+          usernameController.text, 
+          passwordController.text
+        );
+        
+        if (user != null) {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('token', user.token ?? '');
+          await prefs.setInt('userId', user.id);
+          await prefs.setString('username', user.username);
+          await prefs.setString('firstName', user.firstName);
+          await prefs.setString('lastName', user.lastName);
+          await prefs.setString('image', user.image);
+          
+          if (!mounted) return;
+          Navigator.pushReplacementNamed(
+            context, 
+            '/home',
+            arguments: {
+              'username': user.username
+            }
+          );
+        }
+      } catch (e) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login failed. Check your credentials.')),
+        );
+      } finally {
+        if (mounted) setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,25 +115,15 @@ class _LogInScreenState extends State<LogInScreen> {
                       ),
                       SizedBox(height: ScreenUtil().setHeight(50)),
                       
-                      CustomInkwellButton(
-                        onTap: () {
-                          if (_formKey.currentState!.validate()) {
-                            _formKey.currentState!.save();
-                            
-                            Navigator.pushReplacementNamed(
-                              context, 
-                              '/home',
-                              arguments: {
-                                'username': usernameController.text
-                              }
-                            );
-                          }
-                        },
-                        height: ScreenUtil().setHeight(40),
-                        width: ScreenUtil().screenWidth,
-                        buttonName: 'Login',
-                        fontSize: ScreenUtil().setSp(15),
-                      ),
+                      _isLoading
+                          ? const Center(child: CircularProgressIndicator(color: fbPrimary))
+                          : CustomInkwellButton(
+                              onTap: _handleLogin,
+                              height: ScreenUtil().setHeight(40),
+                              width: ScreenUtil().screenWidth,
+                              buttonName: 'Login',
+                              fontSize: ScreenUtil().setSp(15),
+                            ),
                     ],
                   ),
                 ),
@@ -107,16 +140,13 @@ class _LogInScreenState extends State<LogInScreen> {
                             color: Colors.grey.shade200,
                             fontSize: ScreenUtil().setSp(15)),
                       ),
-                      GestureDetector(
-                        onTap: () => Navigator.popAndPushNamed(
-                            context, '/register'),
-                        child: Text(
-                          'Register here',
-                          style: TextStyle(
-                            color: fbLightPrimary,
-                            fontSize: ScreenUtil().setSp(15),
-                            fontWeight: FontWeight.bold,
-                          ),
+                      // Removed Register tap logic since register_screen is deleted
+                      Text(
+                        '',
+                        style: TextStyle(
+                          color: fbLightPrimary,
+                          fontSize: ScreenUtil().setSp(15),
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ],

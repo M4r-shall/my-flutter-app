@@ -6,6 +6,10 @@ import '../constants.dart';
 import '../widgets/custom_font.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/post_card.dart';
+import '../services/post_service.dart';
+import '../models/post.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String username;
@@ -21,7 +25,25 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final String coverImageUrl = "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80";
-  final String profileImageUrl = "https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80";
+  String profileImageUrl = "https://images.unsplash.com/photo-1527980965255-d3b416303d12?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80";
+  int? userId;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      userId = prefs.getInt('userId');
+      final image = prefs.getString('image');
+      if (image != null && image.isNotEmpty) {
+        profileImageUrl = image;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +129,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                       ],
+                    ),
+                  ),
+                  Positioned(
+                    top: ScreenUtil().setHeight(40),
+                    right: ScreenUtil().setWidth(10),
+                    child: IconButton(
+                      icon: const Icon(Icons.settings, color: Colors.white),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingsScreen()));
+                      },
                     ),
                   ),
                 ],
@@ -203,29 +235,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: TabBarView(
                   children: [
                     // --- TAB 1: POSTS ---
-                    ListView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: EdgeInsets.zero,
-                      children: [
-                        PostCard(
-                          userName: widget.username,
-                          profileImagePath: profileImageUrl,
-                          date: DateTime.now().subtract(const Duration(hours: 2)),
-                          postContent: 'Just updated my profile picture! #NewLook',
-                          initialLikes: 120,
-                          hasImage: false,
-                        ),
-                        PostCard(
-                          userName: widget.username,
-                          profileImagePath: profileImageUrl,
-                          date: DateTime.now().subtract(const Duration(days: 1)),
-                          postContent: 'Bebe bebe ur my sun n moon',
-                          initialLikes: 85,
-                          hasImage: true,
-                          postImagePath: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-                        ),
-                      ],
-                    ),
+                    userId == null 
+                    ? const Center(child: CircularProgressIndicator())
+                    : FutureBuilder<List<Post>>(
+                        future: PostService().getPostsByUser(userId!),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const Center(child: CircularProgressIndicator(color: fbPrimary));
+                          }
+                          if (snapshot.hasError) {
+                            return Center(child: Text('Error loading posts', style: TextStyle(color: Colors.white)));
+                          }
+                          final posts = snapshot.data ?? [];
+                          if (posts.isEmpty) {
+                            return const Center(child: Text('No posts available', style: TextStyle(color: Colors.white)));
+                          }
+                          
+                          return ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            itemCount: posts.length,
+                            itemBuilder: (context, index) {
+                              final post = posts[index];
+                              return PostCard(
+                                postId: post.id,
+                                userName: widget.username,
+                                profileImagePath: profileImageUrl,
+                                date: DateTime.now(), // dummyjson posts lack dates
+                                postContent: post.body,
+                                initialLikes: post.likes,
+                                hasImage: false,
+                              );
+                            },
+                          );
+                        },
+                      ),
 
                     // --- TAB 2: ABOUT ---
                     SingleChildScrollView(

@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import 'package:panahon_mobprog/screens/detail_screen.dart';
 import 'package:panahon_mobprog/screens/home_screen.dart';
-import 'package:panahon_mobprog/screens/login_screen.dart';
-import 'package:panahon_mobprog/screens/register_screen.dart';
-
+import 'package:panahon_mobprog/screens/signin_screen.dart';
+import 'package:panahon_mobprog/screens/splash_screen.dart';
+import 'package:panahon_mobprog/providers/theme_provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -23,11 +31,11 @@ class MainApp extends StatelessWidget {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'TFTalks',
-          initialRoute: '/login',
+          initialRoute: '/splash',
           routes: {
+            '/splash': (context) => const SplashScreen(),
             '/home': (context) => const HomeScreen(),
             '/login': (context) => const LogInScreen(),
-            '/register': (context) => const RegisterScreen(),
           },
           onGenerateRoute: (settings) {
             if (settings.name == '/detail') {
