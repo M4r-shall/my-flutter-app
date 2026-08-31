@@ -5,6 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../constants.dart';
 import 'custom_font.dart';
 import '../screens/detail_screen.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 
 class ActionButton extends StatelessWidget {
   final IconData icon;
@@ -113,7 +115,7 @@ class _PostCardState extends State<PostCard> {
     );
   }
 
-  Widget _buildSocialFooter() {
+  Widget _buildSocialFooter(bool isDark) {
     return Column(
       children: [
         Padding(
@@ -125,7 +127,7 @@ class _PostCardState extends State<PostCard> {
                 children: [
                   const Icon(Icons.thumb_up, size: 14, color: Colors.blueAccent),
                   SizedBox(width: 5.w),
-                  CustomFont(text: '$_currentLikes', fontSize: 12.sp, color: fbTextColorWhite),
+                  CustomFont(text: '$_currentLikes', fontSize: 12.sp, color: isDark ? fbTextColorWhite : Colors.black),
                 ],
               ),
               const SizedBox.shrink(), // Removed hardcoded comments count
@@ -136,8 +138,8 @@ class _PostCardState extends State<PostCard> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            ActionButton(icon: Icons.thumb_up_outlined, label: 'Like', color: fbTextColorWhite, onPressed: () => setState(() => _currentLikes++)),
-            ActionButton(icon: Icons.chat_bubble_outline, label: 'Comment', color: fbTextColorWhite, onPressed: () {
+            ActionButton(icon: Icons.thumb_up_outlined, label: 'Like', color: isDark ? fbTextColorWhite : Colors.black, onPressed: () => setState(() => _currentLikes++)),
+            ActionButton(icon: Icons.chat_bubble_outline, label: 'Comment', color: isDark ? fbTextColorWhite : Colors.black, onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -154,7 +156,7 @@ class _PostCardState extends State<PostCard> {
                 ),
               );
             }),
-            ActionButton(icon: Icons.share_outlined, label: 'Share', color: fbTextColorWhite, onPressed: () {}),
+            ActionButton(icon: Icons.share_outlined, label: 'Share', color: isDark ? fbTextColorWhite : Colors.black, onPressed: () {}),
           ],
         ),
       ],
@@ -163,6 +165,7 @@ class _PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
     bool isAd = widget.addMarket.isNotEmpty;
     ImageProvider profileImage = _isNetworkImage(widget.profileImagePath)
         ? CachedNetworkImageProvider(widget.profileImagePath)
@@ -189,7 +192,7 @@ class _PostCardState extends State<PostCard> {
         );
       },
       child: Card(
-        color: fbLightPrimary,
+        color: isDark ? fbLightPrimary : Colors.grey[100],
         margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
         clipBehavior: Clip.antiAlias,
@@ -214,29 +217,29 @@ class _PostCardState extends State<PostCard> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            CustomFont(text: widget.userName, fontSize: 15.sp, color: fbTextColorWhite, fontWeight: FontWeight.bold),
+                            CustomFont(text: widget.userName, fontSize: 15.sp, color: isDark ? fbTextColorWhite : Colors.black, fontWeight: FontWeight.bold),
                             Row(
                               children: [
-                                CustomFont(text: DateFormat.yMMMMd().format(widget.date), fontSize: 12.sp, color: fbTextColorWhite.withOpacity(0.7)),
+                                CustomFont(text: DateFormat.yMMMMd().format(widget.date), fontSize: 12.sp, color: isDark ? fbTextColorWhite.withOpacity(0.7) : Colors.black54),
                                 if (!isAd) ...[
                                   SizedBox(width: 3.w),
-                                  Icon(Icons.circle, size: 3.sp, color: fbTextColorWhite.withOpacity(0.7)),
+                                  Icon(Icons.circle, size: 3.sp, color: isDark ? fbTextColorWhite.withOpacity(0.7) : Colors.black54),
                                   SizedBox(width: 5.w),
-                                  Icon(Icons.public, color: fbTextColorWhite.withOpacity(0.7), size: 12.sp),
+                                  Icon(Icons.public, color: isDark ? fbTextColorWhite.withOpacity(0.7) : Colors.black54, size: 12.sp),
                                 ]
                               ],
                             ),
                           ],
                         ),
                         const Spacer(),
-                        Icon(Icons.more_horiz, color: fbTextColorWhite.withOpacity(0.7)),
+                        Icon(Icons.more_horiz, color: isDark ? fbTextColorWhite.withOpacity(0.7) : Colors.black54),
                       ],
                     ),
                   ),
                   if (isAd) SizedBox(height: 0.h) else SizedBox(height: 10.h),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: isAd ? 15.sp : 0),
-                    child: CustomFont(text: widget.postContent, fontSize: 14.sp, color: fbTextColorWhite),
+                    child: CustomFont(text: widget.postContent, fontSize: 14.sp, color: isDark ? fbTextColorWhite : Colors.black),
                   ),
                   SizedBox(height: 10.h),
                   if (widget.hasImage && widget.postImagePath != null)
@@ -261,7 +264,7 @@ class _PostCardState extends State<PostCard> {
                 ],
               ),
             ),
-            if (isAd) _buildAdFooter() else _buildSocialFooter(),
+            if (isAd) _buildAdFooter() else _buildSocialFooter(isDark),
           ],
         ),
       ),

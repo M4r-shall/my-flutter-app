@@ -1,6 +1,8 @@
 import '../widgets/custom_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 import '../constants.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -76,8 +78,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+
     return Container(
-      color: fbDarkPrimary,
+      color: isDark ? fbDarkPrimary : Colors.white,
       width: ScreenUtil().screenWidth,
       child: ListView(
         children: dummyNotifications.map((notification) {

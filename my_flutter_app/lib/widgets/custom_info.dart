@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/custom_font.dart';
 import '../constants.dart';
 import '../screens/detail_screen.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 
 class CustomInformation extends StatelessWidget {
   const CustomInformation({
@@ -20,6 +22,8 @@ class CustomInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -38,7 +42,7 @@ class CustomInformation extends StatelessWidget {
         );
       },
       child: Container(
-        color: fbLightPrimary,
+        color: isDark ? fbLightPrimary : Colors.grey[100],
         padding: EdgeInsets.all(15.sp),
         child: Row(
           children: [
@@ -50,7 +54,7 @@ class CustomInformation extends StatelessWidget {
                 : Icon(
                     Icons.person,
                     size: 50.sp,
-                    color: fbTextColorWhite,
+                    color: isDark ? fbTextColorWhite : Colors.black,
                   ),
             SizedBox(width: 10.w),
             Expanded(
@@ -60,24 +64,24 @@ class CustomInformation extends StatelessWidget {
                   CustomFont(
                     text: name,
                     fontSize: 20.sp,
-                    color: fbTextColorWhite,
+                    color: isDark ? fbTextColorWhite : Colors.black,
                     fontWeight: FontWeight.w800,
                   ),
                   CustomFont(
                     text: 'Posted: $post',
                     fontSize: 13.sp,
-                    color: fbTextColorWhite,
+                    color: isDark ? fbTextColorWhite : Colors.black,
                   ),
                   CustomFont(
                     text: description,
                     fontSize: 12.sp,
-                    color: fbTextColorWhite,
+                    color: isDark ? fbTextColorWhite : Colors.black,
                     fontStyle: FontStyle.italic,
                   ),
                 ],
               ),
             ),
-            Icon(Icons.more_horiz, color: fbTextColorWhite.withOpacity(0.7)),
+            Icon(Icons.more_horiz, color: isDark ? fbTextColorWhite.withOpacity(0.7) : Colors.black54),
           ],
         ),
       ),

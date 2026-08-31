@@ -7,6 +7,8 @@ import '../widgets/custom_font.dart';
 import '../services/comment_service.dart';
 import '../models/comment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 
 class DetailScreen extends StatefulWidget {
   final int postId;
@@ -97,6 +99,8 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+
     // Determine Profile Image Provider
     ImageProvider profileProvider = _isNetwork(widget.profileImagePath)
         ? CachedNetworkImageProvider(widget.profileImagePath)
@@ -105,16 +109,16 @@ class _DetailScreenState extends State<DetailScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: fbDarkPrimary,
+        backgroundColor: isDark ? fbDarkPrimary : Colors.white,
         elevation: 0,
         title: CustomFont(
           text: widget.userName,
           fontSize: 18.sp,
-          color: fbTextColorWhite,
+          color: isDark ? fbTextColorWhite : Colors.black,
         ),
-        iconTheme: const IconThemeData(color: fbTextColorWhite),
+        iconTheme: IconThemeData(color: isDark ? fbTextColorWhite : Colors.black),
       ),
-      backgroundColor: fbDarkPrimary,
+      backgroundColor: isDark ? fbDarkPrimary : Colors.white,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +162,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       CustomFont(
                         text: widget.userName,
                         fontSize: 16.sp,
-                        color: fbTextColorWhite,
+                        color: isDark ? fbTextColorWhite : Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                       Row(
@@ -186,12 +190,12 @@ class _DetailScreenState extends State<DetailScreen> {
               child: CustomFont(
                 text: widget.postContent,
                 fontSize: 15.sp,
-                color: fbTextColorWhite,
+                color: isDark ? fbTextColorWhite : Colors.black,
               ),
             ),
 
             SizedBox(height: 30.h),
-            const Divider(color: Colors.white12, thickness: 1),
+            Divider(color: isDark ? Colors.white12 : Colors.black12, thickness: 1),
 
             // --- ACTION BUTTONS ---
             Padding(
@@ -212,35 +216,35 @@ class _DetailScreenState extends State<DetailScreen> {
                         : Icons.thumb_up_outlined, 
                       color: _currentLikes > widget.numOfLikes 
                         ? Colors.blueAccent 
-                        : fbTextColorWhite,
+                        : (isDark ? fbTextColorWhite : Colors.black),
                     ),
                     label: CustomFont(
                       text: "Like ($_currentLikes)",
                       fontSize: 12.sp,
                       color: _currentLikes > widget.numOfLikes 
                         ? Colors.blueAccent 
-                        : fbTextColorWhite,
+                        : (isDark ? fbTextColorWhite : Colors.black),
                     ),
                   ),
                   TextButton.icon(
                     onPressed: () {},
-                    icon: const Icon(Icons.mode_comment_outlined, color: fbTextColorWhite),
-                    label: CustomFont(text: "Comment", fontSize: 12.sp, color: fbTextColorWhite),
+                    icon: Icon(Icons.mode_comment_outlined, color: isDark ? fbTextColorWhite : Colors.black),
+                    label: CustomFont(text: "Comment", fontSize: 12.sp, color: isDark ? fbTextColorWhite : Colors.black),
                   ),
                   TextButton.icon(
                     onPressed: () {},
-                    icon: const Icon(Icons.share_outlined, color: fbTextColorWhite),
-                    label: CustomFont(text: "Share", fontSize: 12.sp, color: fbTextColorWhite),
+                    icon: Icon(Icons.share_outlined, color: isDark ? fbTextColorWhite : Colors.black),
+                    label: CustomFont(text: "Share", fontSize: 12.sp, color: isDark ? fbTextColorWhite : Colors.black),
                   ),
                 ],
               ),
             ),
-            const Divider(color: Colors.white12, thickness: 1),
+            Divider(color: isDark ? Colors.white12 : Colors.black12, thickness: 1),
             
             // --- COMMENTS SECTION ---
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-              child: CustomFont(text: 'Comments', fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.white),
+              child: CustomFont(text: 'Comments', fontSize: 16.sp, fontWeight: FontWeight.bold, color: isDark ? Colors.white : Colors.black),
             ),
             
             _isLoadingComments 
@@ -261,8 +265,8 @@ class _DetailScreenState extends State<DetailScreen> {
                             backgroundColor: Colors.grey[800],
                             child: Text(comment.user?.username[0].toUpperCase() ?? 'U', style: const TextStyle(color: Colors.white)),
                           ),
-                          title: Text(comment.user?.username ?? 'Unknown', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                          subtitle: Text(comment.body, style: const TextStyle(color: Colors.white70)),
+                          title: Text(comment.user?.username ?? 'Unknown', style: TextStyle(color: isDark ? Colors.white : Colors.black, fontWeight: FontWeight.bold)),
+                          subtitle: Text(comment.body, style: TextStyle(color: isDark ? Colors.white70 : Colors.black54)),
                         );
                       },
                     ),
@@ -275,12 +279,12 @@ class _DetailScreenState extends State<DetailScreen> {
                   Expanded(
                     child: TextField(
                       controller: _commentController,
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(color: isDark ? Colors.white : Colors.black),
                       decoration: InputDecoration(
                         hintText: 'Write a comment...',
-                        hintStyle: const TextStyle(color: Colors.white54),
+                        hintStyle: TextStyle(color: isDark ? Colors.white54 : Colors.black54),
                         filled: true,
-                        fillColor: Colors.grey[800],
+                        fillColor: isDark ? Colors.grey[800] : Colors.grey[200],
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.r),
                           borderSide: BorderSide.none,

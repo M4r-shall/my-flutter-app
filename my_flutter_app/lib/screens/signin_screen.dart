@@ -5,6 +5,8 @@ import '../constants.dart';
 import '../widgets/custom_inkwell_button.dart';
 import '../services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});
@@ -61,7 +63,10 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+
     return Scaffold(
+      backgroundColor: isDark ? fbDarkPrimary : Colors.white,
       body: SingleChildScrollView(
         child: Container(
           height: ScreenUtil().screenHeight,
@@ -74,7 +79,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 Container(
                   width: ScreenUtil().screenWidth,
                   height: ScreenUtil().setHeight(40),
-                  color: fbDarkPrimary,
+                  color: isDark ? fbDarkPrimary : Colors.white,
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
@@ -83,7 +88,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   child: Column(
                     children: [
                       Image.asset(
-                        'assets/images/NUCCITLogo_Black.png',
+                        isDark ? 'assets/images/NUCCITLogo_White.png' : 'assets/images/NUCCITLogo_Black.png',
                         height: ScreenUtil().setHeight(200),
                       ),
                       SizedBox(height: ScreenUtil().setHeight(30)),
@@ -95,7 +100,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             value!.isEmpty ? 'Enter your username' : null,
                         onSaved: (value) {}, 
                         fontSize: ScreenUtil().setSp(15),
-                        fontColor: fbDarkPrimary,
+                        fontColor: isDark ? fbTextColorWhite : fbDarkPrimary,
                         hintTextSize: ScreenUtil().setSp(15),
                         hintText: 'Username',
                       ),
@@ -109,7 +114,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             value!.isEmpty ? 'Enter your password' : null,
                         onSaved: (value) {},
                         fontSize: ScreenUtil().setSp(15),
-                        fontColor: fbDarkPrimary,
+                        fontColor: isDark ? fbTextColorWhite : fbDarkPrimary,
                         hintTextSize: ScreenUtil().setSp(15),
                         hintText: 'Password',
                       ),
@@ -130,14 +135,14 @@ class _LogInScreenState extends State<LogInScreen> {
                 Container(
                   width: ScreenUtil().screenWidth,
                   height: ScreenUtil().setHeight(40),
-                  color: fbDarkPrimary,
+                  color: isDark ? fbDarkPrimary : Colors.white,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         'You do not have an account? ',
                         style: TextStyle(
-                            color: Colors.grey.shade200,
+                            color: isDark ? Colors.grey.shade200 : Colors.black,
                             fontSize: ScreenUtil().setSp(15)),
                       ),
                       // Removed Register tap logic since register_screen is deleted

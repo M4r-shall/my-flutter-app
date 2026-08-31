@@ -9,6 +9,8 @@ import '../widgets/post_card.dart';
 import '../services/post_service.dart';
 import '../models/post.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 import 'settings_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -47,10 +49,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        backgroundColor: fbDarkPrimary,
+        backgroundColor: isDark ? fbDarkPrimary : Colors.white,
         body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,8 +92,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Container(
                           padding: EdgeInsets.all(ScreenUtil().setWidth(4)),
-                          decoration: const BoxDecoration(
-                            color: fbDarkPrimary,
+                          decoration: BoxDecoration(
+                            color: isDark ? fbDarkPrimary : Colors.white,
                             shape: BoxShape.circle,
                           ),
                           // --- ENHANCEMENT 3: PROFILE PHOTO WITH LOADING ---
@@ -154,7 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       text: widget.username, 
                       fontWeight: FontWeight.bold,
                       fontSize: ScreenUtil().setSp(24),
-                      color: fbTextColorWhite,
+                      color: isDark ? fbTextColorWhite : Colors.black,
                     ),
 
                     SizedBox(height: ScreenUtil().setHeight(5)),
@@ -164,30 +168,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         CustomFont(
                           text: '11M',
                           fontSize: ScreenUtil().setSp(15),
-                          color: fbTextColorWhite,
+                          color: isDark ? fbTextColorWhite : Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                         SizedBox(width: ScreenUtil().setWidth(5)),
                         CustomFont(
                           text: 'Followers',
                           fontSize: ScreenUtil().setSp(15),
-                          color: fbTextColorWhite,
+                          color: isDark ? fbTextColorWhite : Colors.black,
                           fontWeight: FontWeight.w100,
                         ),
                         SizedBox(width: ScreenUtil().setWidth(15)),
-                        const Icon(Icons.circle, size: 5, color: fbTextColorWhite),
+                        Icon(Icons.circle, size: 5, color: isDark ? fbTextColorWhite : Colors.black),
                         SizedBox(width: ScreenUtil().setWidth(15)),
                         CustomFont(
                           text: '1',
                           fontSize: ScreenUtil().setSp(15),
-                          color: fbTextColorWhite,
+                          color: isDark ? fbTextColorWhite : Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                         SizedBox(width: ScreenUtil().setWidth(5)),
                         CustomFont(
                           text: 'Following',
                           fontSize: ScreenUtil().setSp(15),
-                          color: fbTextColorWhite,
+                          color: isDark ? fbTextColorWhite : Colors.black,
                           fontWeight: FontWeight.w100,
                         ),
                       ],
@@ -224,9 +228,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 labelColor: fbPrimary,
                 unselectedLabelColor: Colors.grey,
                 tabs: [
-                  Tab(child: CustomFont(text: 'Posts', fontSize: 15.sp, color: fbTextColorWhite)),
-                  Tab(child: CustomFont(text: 'About', fontSize: 15.sp, color: fbTextColorWhite)),
-                  Tab(child: CustomFont(text: 'Photos', fontSize: 15.sp, color: fbTextColorWhite)),
+                  Tab(child: CustomFont(text: 'Posts', fontSize: 15.sp, color: isDark ? fbTextColorWhite : Colors.black)),
+                  Tab(child: CustomFont(text: 'About', fontSize: 15.sp, color: isDark ? fbTextColorWhite : Colors.black)),
+                  Tab(child: CustomFont(text: 'Photos', fontSize: 15.sp, color: isDark ? fbTextColorWhite : Colors.black)),
                 ],
               ),
 
@@ -281,17 +285,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             text: 'Details', 
                             fontSize: 18.sp, 
                             fontWeight: FontWeight.bold, 
-                            color: Colors.white
+                            color: isDark ? Colors.white : Colors.black
                           ),
                           SizedBox(height: 15.h),
 
-                          _buildAboutRow(Icons.school, 'Studies at', 'National University'),
-                          _buildAboutRow(Icons.history_edu, 'Went to', 'Senior High School'),
-                          _buildAboutRow(Icons.work, 'Works at', 'Flutter Developer'),
-                          _buildAboutRow(Icons.home, 'Lives in', 'San Juan City, Philippines'),
-                          _buildAboutRow(Icons.location_on, 'From', 'Manila, Philippines'),
-                          _buildAboutRow(Icons.favorite, 'Taken', ''),
-                          _buildAboutRow(Icons.more_horiz, 'See your about info', ''),
+                          _buildAboutRow(Icons.school, 'Studies at', 'National University', isDark),
+                          _buildAboutRow(Icons.history_edu, 'Went to', 'Senior High School', isDark),
+                          _buildAboutRow(Icons.work, 'Works at', 'Flutter Developer', isDark),
+                          _buildAboutRow(Icons.home, 'Lives in', 'San Juan City, Philippines', isDark),
+                          _buildAboutRow(Icons.location_on, 'From', 'Manila, Philippines', isDark),
+                          _buildAboutRow(Icons.favorite, 'Taken', '', isDark),
+                          _buildAboutRow(Icons.more_horiz, 'See your about info', '', isDark),
 
                           SizedBox(height: 20.h),
                           
@@ -342,7 +346,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildAboutRow(IconData icon, String label, String value) {
+  Widget _buildAboutRow(IconData icon, String label, String value, bool isDark) {
     return Padding(
       padding: EdgeInsets.only(bottom: 15.h),
       child: Row(
@@ -353,7 +357,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             child: RichText(
               text: TextSpan(
-                style: TextStyle(fontSize: 15.sp, color: Colors.white),
+                style: TextStyle(fontSize: 15.sp, color: isDark ? Colors.white : Colors.black),
                 children: [
                   TextSpan(text: '$label '),
                   TextSpan(

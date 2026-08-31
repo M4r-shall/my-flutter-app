@@ -3,6 +3,8 @@
 import 'package:flutter/services.dart';
 import '../constants.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 
 class CustomTextFormField extends StatefulWidget {
   const CustomTextFormField({
@@ -51,6 +53,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+
     return TextFormField(
       validator: widget.validator,
       onSaved: widget.onSaved,
@@ -74,9 +78,9 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         contentPadding: EdgeInsets.fromLTRB(
             widget.width, widget.height, widget.width, widget.height),
         focusColor: Colors.black12,
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: fbDarkPrimary, width: 2),
-          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: isDark ? Colors.white54 : fbDarkPrimary, width: 2),
+          borderRadius: const BorderRadius.all(Radius.circular(10.0)),
         ),
         errorBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.red, width: 2),
@@ -93,12 +97,12 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         ),
         filled: true,
         hintStyle: TextStyle(
-          color: Colors.black12,
+          color: isDark ? Colors.white54 : Colors.black12,
           fontSize: widget.hintTextSize,
           fontFamily: 'Frutiger',
         ),
         hintText: widget.hintText,
-        fillColor: widget.fillColor,
+        fillColor: isDark ? Colors.grey[800] : widget.fillColor,
 
         suffixIcon: widget.isObscure
             ? Padding(
@@ -108,7 +112,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                   constraints: const BoxConstraints(), 
                   icon: Icon(
                     _obscureText ? Icons.visibility : Icons.visibility_off,
-                    color: fbDarkPrimary,
+                    color: isDark ? Colors.white54 : fbDarkPrimary,
                     size: 20,
                   ),
                   onPressed: () {

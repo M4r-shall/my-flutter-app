@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -40,19 +42,21 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+
     return Scaffold(
-      backgroundColor: fbDarkPrimary,
+      backgroundColor: isDark ? fbDarkPrimary : Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/NUCCITLogo_White.png',
+              isDark ? 'assets/images/NUCCITLogo_White.png' : 'assets/images/NUCCITLogo_Black.png',
               height: ScreenUtil().setHeight(150),
-              errorBuilder: (context, error, stackTrace) => const Icon(
+              errorBuilder: (context, error, stackTrace) => Icon(
                 Icons.computer,
                 size: 150,
-                color: Colors.white,
+                color: isDark ? Colors.white : Colors.black,
               ),
             ),
             SizedBox(height: ScreenUtil().setHeight(20)),

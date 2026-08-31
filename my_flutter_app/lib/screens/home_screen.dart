@@ -5,6 +5,8 @@ import '../screens/newsfeed_screen.dart';
 import '../screens/notification_screen.dart';
 import '../screens/profile_screen.dart';
 import '../widgets/custom_font.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -51,10 +53,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
+
     return Scaffold(
+      backgroundColor: isDark ? fbDarkPrimary : Colors.white,
       appBar: AppBar(
-        backgroundColor: fbDarkPrimary,
-        shadowColor: fbTextColorWhite,
+        backgroundColor: isDark ? fbDarkPrimary : Colors.white,
+        shadowColor: isDark ? fbTextColorWhite : Colors.black,
         elevation: 2,
         title: CustomFont(
           text: _titles[_selectedIndex],
@@ -90,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
         selectedItemColor: fbPrimary,
-        unselectedItemColor: fbTextColorWhite,
+        unselectedItemColor: isDark ? fbTextColorWhite : Colors.black54,
         currentIndex: _selectedIndex,
       ),
     );

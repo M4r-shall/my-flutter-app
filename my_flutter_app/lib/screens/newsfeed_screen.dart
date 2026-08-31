@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 import '../constants.dart';
 import '../widgets/post_card.dart';
 
@@ -143,6 +145,7 @@ class NewsfeedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = context.watch<ThemeProvider>().isDarkMode;
     List<PostCard> newsCards = _getRegularPosts();
     List<Widget> combinedContent = [];
 
@@ -162,7 +165,7 @@ class NewsfeedScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18.sp,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: isDark ? Colors.white : Colors.black,
                   ),
                 ),
               ),
@@ -182,7 +185,7 @@ class NewsfeedScreen extends StatelessWidget {
     }
 
     return Container(
-      color: fbDarkPrimary,
+      color: isDark ? fbDarkPrimary : Colors.white,
       child: ListView(children: combinedContent),
     );
   }
