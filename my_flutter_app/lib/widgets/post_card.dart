@@ -128,7 +128,7 @@ class _PostCardState extends State<PostCard> {
                   CustomFont(text: '$_currentLikes', fontSize: 12.sp, color: fbTextColorWhite),
                 ],
               ),
-              CustomFont(text: "3 Comments", fontSize: 12.sp, color: fbTextColorWhite),
+              const SizedBox.shrink(), // Removed hardcoded comments count
             ],
           ),
         ),
@@ -137,7 +137,23 @@ class _PostCardState extends State<PostCard> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ActionButton(icon: Icons.thumb_up_outlined, label: 'Like', color: fbTextColorWhite, onPressed: () => setState(() => _currentLikes++)),
-            ActionButton(icon: Icons.chat_bubble_outline, label: 'Comment', color: fbTextColorWhite, onPressed: () {}),
+            ActionButton(icon: Icons.chat_bubble_outline, label: 'Comment', color: fbTextColorWhite, onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailScreen(
+                    postId: widget.postId,
+                    userName: widget.userName,
+                    postContent: widget.postContent,
+                    date: widget.date,
+                    numOfLikes: _currentLikes,
+                    hasImage: widget.hasImage,
+                    profileImagePath: widget.profileImagePath,
+                    postImagePath: widget.postImagePath,
+                  ),
+                ),
+              );
+            }),
             ActionButton(icon: Icons.share_outlined, label: 'Share', color: fbTextColorWhite, onPressed: () {}),
           ],
         ),

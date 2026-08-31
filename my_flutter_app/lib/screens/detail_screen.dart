@@ -36,7 +36,8 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   late int _currentLikes;
-  late Future<List<Comment>> _commentsFuture;
+  bool _isLoadingComments = true;
+  List<Comment> _comments = [];
   final TextEditingController _commentController = TextEditingController();
   bool _isPosting = false;
 
@@ -44,7 +45,23 @@ class _DetailScreenState extends State<DetailScreen> {
   void initState() {
     super.initState();
     _currentLikes = widget.numOfLikes;
-    _commentsFuture = CommentService().getCommentsByPost(widget.postId);
+    _fetchComments();
+  }
+
+  Future<void> _fetchComments() async {
+    try {
+      final comments = await CommentService().getCommentsByPost(widget.postId);
+      if (mounted) {
+        setState(() {
+          _comments = comments;
+          _isLoadingComments = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() => _isLoadingComments = false);
+      }
+    }
   }
 
   Future<void> _postComment() async {
@@ -55,11 +72,11 @@ class _DetailScreenState extends State<DetailScreen> {
       final prefs = await SharedPreferences.getInstance();
       final userId = prefs.getInt('userId') ?? 1;
       
-      await CommentService().addComment(_commentController.text.trim(), widget.postId, userId);
+      final newComment = await CommentService().addComment(_commentController.text.trim(), widget.postId, userId);
       
       _commentController.clear();
       setState(() {
-        _commentsFuture = CommentService().getCommentsByPost(widget.postId);
+        _comments.add(newComment);
       });
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Comment added!')));
@@ -226,45 +243,29 @@ class _DetailScreenState extends State<DetailScreen> {
               child: CustomFont(text: 'Comments', fontSize: 16.sp, fontWeight: FontWeight.bold, color: Colors.white),
             ),
             
-            FutureBuilder<List<Comment>>(
-              future: _commentsFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator(color: fbPrimary));
-                }
-                if (snapshot.hasError) {
-                  return Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Text('Error loading comments', style: TextStyle(color: Colors.white)),
-                  );
-                }
-                
-                final comments = snapshot.data ?? [];
-                if (comments.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Text('No comments yet.', style: TextStyle(color: Colors.grey)),
-                  );
-                }
-                
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: comments.length,
-                  itemBuilder: (context, index) {
-                    final comment = comments[index];
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.grey[800],
-                        child: Text(comment.user?.username[0].toUpperCase() ?? 'U', style: const TextStyle(color: Colors.white)),
-                      ),
-                      title: Text(comment.user?.username ?? 'Unknown', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                      subtitle: Text(comment.body, style: const TextStyle(color: Colors.white70)),
-                    );
-                  },
-                );
-              }
-            ),
+            _isLoadingComments 
+              ? const Center(child: CircularProgressIndicator(color: fbPrimary))
+              : _comments.isEmpty 
+                  ? const Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Text('No comments yet.', style: TextStyle(color: Colors.grey)),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: _comments.length,
+                      itemBuilder: (context, index) {
+                        final comment = _comments[index];
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.grey[800],
+                            child: Text(comment.user?.username[0].toUpperCase() ?? 'U', style: const TextStyle(color: Colors.white)),
+                          ),
+                          title: Text(comment.user?.username ?? 'Unknown', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          subtitle: Text(comment.body, style: const TextStyle(color: Colors.white70)),
+                        );
+                      },
+                    ),
             
             // --- ADD COMMENT FIELD ---
             Padding(
