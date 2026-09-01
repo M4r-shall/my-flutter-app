@@ -23,6 +23,7 @@ class NewsfeedScreen extends StatelessWidget {
   List<Widget> carouselItems() {
     return [
       PostCard(
+        postId: 21,
         userName: "Pet Shop Promos",
         postContent: "50% OFF on all premium dog food! Limited time only.",
         date: DateTime.now(),
@@ -34,6 +35,7 @@ class NewsfeedScreen extends StatelessWidget {
             "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
       ),
       PostCard(
+        postId: 22,
         userName: "Gadget World",
         postContent:
             "New Smart Collar available now. Track your pets anywhere.",
@@ -46,6 +48,7 @@ class NewsfeedScreen extends StatelessWidget {
             "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
       ),
       PostCard(
+        postId: 23,
         userName: "VetCare Plus",
         postContent: "Free checkup for new puppies this weekend.",
         date: DateTime.now(),
@@ -57,6 +60,7 @@ class NewsfeedScreen extends StatelessWidget {
             "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
       ),
       PostCard(
+        postId: 24,
         userName: "Toy Kingdom",
         postContent: "Chew toys that last forever. Guaranteed.",
         date: DateTime.now(),
@@ -68,6 +72,7 @@ class NewsfeedScreen extends StatelessWidget {
             "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
       ),
       PostCard(
+        postId: 25,
         userName: "Cyrus Deals",
         postContent: "Buy 1 Get 1 on all cat treats.",
         date: DateTime.now(),
@@ -84,6 +89,7 @@ class NewsfeedScreen extends StatelessWidget {
   List<PostCard> _getRegularPosts() {
     return [
       PostCard(
+        postId: 11,
         userName: 'Marius Clarence Panahon',
         postContent:
             'New semester, new challenges. Let\'s get this TFTalks to a high grade!',
@@ -93,6 +99,7 @@ class NewsfeedScreen extends StatelessWidget {
         profileImagePath: 'assets/images/cat mouth.jpg',
       ),
       PostCard(
+        postId: 12,
         userName: 'Pau',
         postContent:
             'World traveling is amazing. What places should I visit next?',
@@ -104,6 +111,7 @@ class NewsfeedScreen extends StatelessWidget {
         profileImagePath: 'assets/images/cat pixel.jpg',
       ),
       PostCard(
+        postId: 13,
         userName: 'Shem',
         postContent: 'Just finished a marathon coding session. Need coffee!',
         initialLikes: 45,
@@ -112,6 +120,7 @@ class NewsfeedScreen extends StatelessWidget {
         profileImagePath: 'assets/images/cat santa.jpg',
       ),
       PostCard(
+        postId: 14,
         userName: 'Mac',
         postContent:
             'Excited about the upcoming project deadline. Ready to shine!',
@@ -122,6 +131,7 @@ class NewsfeedScreen extends StatelessWidget {
         profileImagePath: 'assets/images/cat shh.jpg',
       ),
       PostCard(
+        postId: 15,
         userName: 'Vergie',
         postContent:
             'Debugging code is like being a detective in a crime movie where you are also the murderer.',
@@ -132,6 +142,7 @@ class NewsfeedScreen extends StatelessWidget {
         profileImagePath: 'assets/images/cat wire.jpg',
       ),
       PostCard(
+        postId: 16,
         userName: 'JB',
         postContent: 'Anyone want to play Valorant later?',
         initialLikes: 12,

@@ -9,12 +9,14 @@ import '../providers/theme_provider.dart';
 class CustomInformation extends StatelessWidget {
   const CustomInformation({
     super.key,
+    this.postId = 0,
     required this.name,
     required this.post,
     required this.description,
     this.profileImagePath,
   });
 
+  final int postId;
   final String name;
   final String post;
   final String description;
@@ -30,6 +32,7 @@ class CustomInformation extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => DetailScreen(
+              postId: postId,
               userName: name,
               postContent: "$post\n\n$description",
               date: DateTime.now(),

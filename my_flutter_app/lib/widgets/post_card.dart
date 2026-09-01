@@ -62,6 +62,7 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   late int _currentLikes;
+  bool _isLiked = false;
 
   @override
   void initState() {
@@ -138,7 +139,22 @@ class _PostCardState extends State<PostCard> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            ActionButton(icon: Icons.thumb_up_outlined, label: 'Like', color: isDark ? fbTextColorWhite : Colors.black, onPressed: () => setState(() => _currentLikes++)),
+            ActionButton(
+              icon: _isLiked ? Icons.thumb_up : Icons.thumb_up_outlined,
+              label: 'Like',
+              color: _isLiked ? Colors.blueAccent : (isDark ? fbTextColorWhite : Colors.black),
+              onPressed: () {
+                setState(() {
+                  if (_isLiked) {
+                    _currentLikes--;
+                    _isLiked = false;
+                  } else {
+                    _currentLikes++;
+                    _isLiked = true;
+                  }
+                });
+              },
+            ),
             ActionButton(icon: Icons.chat_bubble_outline, label: 'Comment', color: isDark ? fbTextColorWhite : Colors.black, onPressed: () {
               Navigator.push(
                 context,

@@ -42,6 +42,7 @@ class _DetailScreenState extends State<DetailScreen> {
   List<Comment> _comments = [];
   final TextEditingController _commentController = TextEditingController();
   bool _isPosting = false;
+  bool _isLiked = false;
 
   @override
   void initState() {
@@ -203,25 +204,31 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  // Like Button with increment logic
+                  // Like Button with toggle logic
                   TextButton.icon(
                     onPressed: () {
                       setState(() {
-                        _currentLikes++;
+                        if (_isLiked) {
+                          _currentLikes--;
+                          _isLiked = false;
+                        } else {
+                          _currentLikes++;
+                          _isLiked = true;
+                        }
                       });
                     },
                     icon: Icon(
-                      _currentLikes > widget.numOfLikes 
+                      _isLiked 
                         ? Icons.thumb_up 
                         : Icons.thumb_up_outlined, 
-                      color: _currentLikes > widget.numOfLikes 
+                      color: _isLiked 
                         ? Colors.blueAccent 
                         : (isDark ? fbTextColorWhite : Colors.black),
                     ),
                     label: CustomFont(
                       text: "Like ($_currentLikes)",
                       fontSize: 12.sp,
-                      color: _currentLikes > widget.numOfLikes 
+                      color: _isLiked 
                         ? Colors.blueAccent 
                         : (isDark ? fbTextColorWhite : Colors.black),
                     ),
