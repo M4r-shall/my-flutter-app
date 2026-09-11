@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart';
-
-import '../constants.dart';
 import '../models/post.dart';
 
 class PostService {
