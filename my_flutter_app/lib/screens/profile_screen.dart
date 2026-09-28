@@ -247,11 +247,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             return const Center(child: CircularProgressIndicator(color: fbPrimary));
                           }
                           if (snapshot.hasError) {
-                            return Center(child: Text('Error loading posts', style: TextStyle(color: Colors.white)));
+                            return Center(child: Text('Error loading posts', style: TextStyle(color: isDark ? Colors.white : Colors.black)));
                           }
                           final posts = snapshot.data ?? [];
                           if (posts.isEmpty) {
-                            return const Center(child: Text('No posts available', style: TextStyle(color: Colors.white)));
+                            return Center(child: Text('No posts available', style: TextStyle(color: isDark ? Colors.white : Colors.black)));
                           }
                           
                           return ListView.builder(
@@ -265,6 +265,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 userName: widget.username,
                                 profileImagePath: profileImageUrl,
                                 date: DateTime.now(), // dummyjson posts lack dates
+                                title: post.title,
                                 postContent: post.body,
                                 initialLikes: post.likes,
                                 hasImage: false,

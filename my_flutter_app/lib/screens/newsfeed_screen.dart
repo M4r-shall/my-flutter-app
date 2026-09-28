@@ -1,21 +1,69 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
 import '../constants.dart';
 import '../widgets/post_card.dart';
+import '../models/post.dart';
+import '../models/user.dart';
+import '../services/post_service.dart';
+import '../services/user_service.dart';
 
-class NewsfeedScreen extends StatelessWidget {
+class NewsfeedScreen extends StatefulWidget {
   const NewsfeedScreen({super.key});
 
-  DateTime _parseDateString(String dateString) {
+  @override
+  State<NewsfeedScreen> createState() => _NewsfeedScreenState();
+}
+
+class _NewsfeedScreenState extends State<NewsfeedScreen> {
+  List<Post> _posts = [];
+  final Map<int, User> _authors = {};
+  bool _isLoading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPosts();
+  }
+
+  Future<void> _fetchPosts({bool showLoader = true}) async {
+    if (showLoader) {
+      setState(() {
+        _isLoading = true;
+        _error = null;
+      });
+    }
+
     try {
-      DateTime parsedDate = DateFormat('MMMM d').parse(dateString);
-      return DateTime(DateTime.now().year, parsedDate.month, parsedDate.day);
+      final posts = await PostService().getPosts();
+
+      // Fetch each unique author once for their name and avatar
+      final missingIds = posts
+          .map((p) => p.userId)
+          .toSet()
+          .where((id) => !_authors.containsKey(id));
+      final users = await Future.wait(
+        missingIds.map((id) => UserService().getUserById(id).then<User?>((u) => u, onError: (_) => null)),
+      );
+      for (final user in users) {
+        if (user != null) _authors[user.id] = user;
+      }
+
+      if (!mounted) return;
+      setState(() {
+        _posts = posts;
+        _isLoading = false;
+        _error = null;
+      });
     } catch (e) {
-      return DateTime.now();
+      if (!mounted) return;
+      setState(() {
+        _error = 'Failed to load posts.';
+        _isLoading = false;
+      });
     }
   }
 
@@ -86,118 +134,96 @@ class NewsfeedScreen extends StatelessWidget {
     ];
   }
 
-  List<PostCard> _getRegularPosts() {
-    return [
-      PostCard(
-        postId: 11,
-        userName: 'Marius Clarence Panahon',
-        postContent:
-            'New semester, new challenges. Let\'s get this TFTalks to a high grade!',
-        initialLikes: 100,
-        date: _parseDateString('September 15'),
-        hasImage: false,
-        profileImagePath: 'assets/images/cat mouth.jpg',
-      ),
-      PostCard(
-        postId: 12,
-        userName: 'Pau',
-        postContent:
-            'World traveling is amazing. What places should I visit next?',
-        initialLikes: 210,
-        date: _parseDateString('October 28'),
-        hasImage: true,
-        postImagePath:
-            'assets/images/cat pixel.jpg',
-        profileImagePath: 'assets/images/cat pixel.jpg',
-      ),
-      PostCard(
-        postId: 13,
-        userName: 'Shem',
-        postContent: 'Just finished a marathon coding session. Need coffee!',
-        initialLikes: 45,
-        date: _parseDateString('November 30'),
-        hasImage: false,
-        profileImagePath: 'assets/images/cat santa.jpg',
-      ),
-      PostCard(
-        postId: 14,
-        userName: 'Mac',
-        postContent:
-            'Excited about the upcoming project deadline. Ready to shine!',
-        initialLikes: 312,
-        date: _parseDateString('December 5'),
-        hasImage: true,
-        postImagePath: 'assets/images/cat shh.jpg',
-        profileImagePath: 'assets/images/cat shh.jpg',
-      ),
-      PostCard(
-        postId: 15,
-        userName: 'Vergie',
-        postContent:
-            'Debugging code is like being a detective in a crime movie where you are also the murderer.',
-        initialLikes: 88,
-        date: _parseDateString('December 5'),
-        hasImage: true,
-        postImagePath: 'assets/images/cat wire.jpg',
-        profileImagePath: 'assets/images/cat wire.jpg',
-      ),
-      PostCard(
-        postId: 16,
-        userName: 'JB',
-        postContent: 'Anyone want to play Valorant later?',
-        initialLikes: 12,
-        date: _parseDateString('December 5'),
-        hasImage: true,
-        postImagePath: 'assets/images/cat.jpg',
-        profileImagePath: 'assets/images/cat.jpg',
-      ),
-    ];
+  PostCard _buildPostCard(Post post) {
+    final author = _authors[post.userId];
+    final name = author != null
+        ? '${author.firstName} ${author.lastName}'.trim()
+        : 'User ${post.userId}';
+
+    return PostCard(
+      postId: post.id,
+      userName: name.isEmpty ? (author?.username ?? 'User ${post.userId}') : name,
+      title: post.title,
+      postContent: post.body,
+      initialLikes: post.likes,
+      date: DateTime.now(), // dummyjson posts lack dates
+      hasImage: false,
+      profileImagePath: (author != null && author.image.isNotEmpty)
+          ? author.image
+          : 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+    );
+  }
+
+  Widget _buildAdSection(bool isDark) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 16.w, top: 16.h, bottom: 8.h),
+          child: Text(
+            "Advertisement/ Promotion",
+            style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.bold,
+              color: isDark ? Colors.white : Colors.black,
+            ),
+          ),
+        ),
+        CarouselSlider(
+          options: CarouselOptions(
+            height: 380.h,
+            enableInfiniteScroll: false,
+            padEnds: false,
+            viewportFraction: 0.9,
+          ),
+          items: carouselItems(),
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final isDark = context.watch<ThemeProvider>().isDarkMode;
-    List<PostCard> newsCards = _getRegularPosts();
-    List<Widget> combinedContent = [];
+    final textColor = isDark ? Colors.white : Colors.black;
 
-    for (int i = 0; i < newsCards.length; i++) {
-      combinedContent.add(newsCards[i]);
+    Widget body;
+    if (_isLoading) {
+      body = const Center(child: CircularProgressIndicator(color: fbPrimary));
+    } else if (_error != null) {
+      body = Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(_error!, style: TextStyle(color: textColor)),
+            SizedBox(height: 10.h),
+            TextButton(
+              onPressed: _fetchPosts,
+              child: const Text('Retry', style: TextStyle(color: fbPrimary)),
+            ),
+          ],
+        ),
+      );
+    } else {
+      List<Widget> combinedContent = [];
+      for (int i = 0; i < _posts.length; i++) {
+        combinedContent.add(_buildPostCard(_posts[i]));
 
-    
-      if (i == 0 || i == 2 || i == 4) {
-        combinedContent.add(
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(left: 16.w, top: 16.h, bottom: 8.h),
-                child: Text(
-                  "Advertisement/ Promotion",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black,
-                  ),
-                ),
-              ),
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 380.h,
-                  enableInfiniteScroll: false,
-                  padEnds: false,
-                  viewportFraction: 0.9,
-                ),
-                items: carouselItems(),
-              ),
-            ],
-          ),
-        );
+        if (i == 0 || i == 2 || i == 4) {
+          combinedContent.add(_buildAdSection(isDark));
+        }
       }
+
+      body = RefreshIndicator(
+        color: fbPrimary,
+        onRefresh: () => _fetchPosts(showLoader: false),
+        child: ListView(children: combinedContent),
+      );
     }
 
     return Container(
       color: isDark ? fbDarkPrimary : Colors.white,
-      child: ListView(children: combinedContent),
+      child: body,
     );
   }
 }

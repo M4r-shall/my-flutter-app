@@ -13,6 +13,7 @@ import '../providers/theme_provider.dart';
 class DetailScreen extends StatefulWidget {
   final int postId;
   final String userName;
+  final String? title;
   final String postContent;
   final DateTime date;
   final int numOfLikes;
@@ -24,6 +25,7 @@ class DetailScreen extends StatefulWidget {
     super.key,
     this.postId = 0,
     required this.userName,
+    this.title,
     required this.postContent,
     required this.date,
     this.numOfLikes = 0,
@@ -186,6 +188,18 @@ class _DetailScreenState extends State<DetailScreen> {
             SizedBox(height: 15.h),
 
             // --- POST CONTENT TEXT ---
+            if (widget.title != null && widget.title!.isNotEmpty) ...[
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: CustomFont(
+                  text: widget.title!,
+                  fontSize: 17.sp,
+                  fontWeight: FontWeight.bold,
+                  color: isDark ? fbTextColorWhite : Colors.black,
+                ),
+              ),
+              SizedBox(height: 8.h),
+            ],
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: CustomFont(

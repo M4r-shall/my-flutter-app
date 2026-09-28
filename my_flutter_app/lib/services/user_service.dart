@@ -23,4 +23,15 @@ class UserService {
       throw Exception('Failed to login: ${response.statusCode}');
     }
   }
+
+  Future<User> getUserById(int id) async {
+    final uri = Uri.parse('$baseUrl/users/$id?select=id,username,firstName,lastName,image');
+    final response = await get(uri, headers: {'Content-Type': 'application/json'});
+
+    if (response.statusCode == 200) {
+      return User.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load user: ${response.statusCode}');
+    }
+  }
 }

@@ -35,6 +35,7 @@ class ActionButton extends StatelessWidget {
 class PostCard extends StatefulWidget {
   final int postId;
   final String userName;
+  final String? title;
   final String postContent;
   final DateTime date;
   final int initialLikes;
@@ -47,6 +48,7 @@ class PostCard extends StatefulWidget {
     super.key,
     this.postId = 0,
     required this.userName,
+    this.title,
     required this.postContent,
     this.initialLikes = 0,
     this.hasImage = false,
@@ -162,6 +164,7 @@ class _PostCardState extends State<PostCard> {
                   builder: (context) => DetailScreen(
                     postId: widget.postId,
                     userName: widget.userName,
+                    title: widget.title,
                     postContent: widget.postContent,
                     date: widget.date,
                     numOfLikes: _currentLikes,
@@ -196,6 +199,7 @@ class _PostCardState extends State<PostCard> {
             builder: (context) => DetailScreen(
               postId: widget.postId,
               userName: widget.userName,
+              title: widget.title,
               postContent: widget.postContent,
               date: widget.date,
               numOfLikes: _currentLikes,
@@ -253,6 +257,13 @@ class _PostCardState extends State<PostCard> {
                     ),
                   ),
                   if (isAd) SizedBox(height: 0.h) else SizedBox(height: 10.h),
+                  if (widget.title != null && widget.title!.isNotEmpty) ...[
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: isAd ? 15.sp : 0),
+                      child: CustomFont(text: widget.title!, fontSize: 15.sp, fontWeight: FontWeight.bold, color: isDark ? fbTextColorWhite : Colors.black),
+                    ),
+                    SizedBox(height: 5.h),
+                  ],
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: isAd ? 15.sp : 0),
                     child: CustomFont(text: widget.postContent, fontSize: 14.sp, color: isDark ? fbTextColorWhite : Colors.black),

@@ -9,7 +9,10 @@ class SettingsScreen extends StatelessWidget {
 
   Future<void> _signOut(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
+    // Remove only session data so preferences (e.g. dark mode) survive sign out
+    for (final key in ['token', 'userId', 'username', 'firstName', 'lastName', 'image']) {
+      await prefs.remove(key);
+    }
     if (!context.mounted) return;
     Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }

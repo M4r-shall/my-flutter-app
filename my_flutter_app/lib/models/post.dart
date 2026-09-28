@@ -2,7 +2,9 @@ class Post {
   final int id;
   final int postId;
   final int userId;
+  final String title;
   final String body;
+  final List<String> tags;
   final int likes;
   final int dislikes;
   final String createdAt;
@@ -12,7 +14,9 @@ class Post {
     required this.id,
     required this.postId,
     required this.userId,
+    this.title = '',
     required this.body,
+    this.tags = const [],
     required this.likes,
     required this.dislikes,
     required this.createdAt,
@@ -24,7 +28,9 @@ class Post {
       id: json['id'] ?? 0,
       postId: json['postId'] ?? json['post_id'] ?? 0,
       userId: json['userId'] ?? json['user_id'] ?? 0,
+      title: json['title'] ?? '',
       body: json['body'] ?? '',
+      tags: (json['tags'] as List?)?.map((t) => t.toString()).toList() ?? [],
       likes: (json['reactions'] != null && json['reactions']['likes'] != null)
           ? (json['reactions']['likes'] as num).toInt()
           : (json['likes'] as num?)?.toInt() ?? 0,
@@ -41,7 +47,9 @@ class Post {
       'id': id,
       'postId': postId,
       'userId': userId,
+      'title': title,
       'body': body,
+      'tags': tags,
       'reactions': {
         'likes': likes,
         'dislikes': dislikes,
